@@ -1,4 +1,5 @@
-﻿using CoreService.Application.Common.Interfaces;
+﻿using System.Reflection.Metadata;
+using CoreService.Application.Common.Interfaces;
 using CoreService.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -26,6 +27,8 @@ builder.Services.AddDbContext<CoreServiceDbContext>(options =>
 // 🔹 Регистрация интерфейса контекста (раскомментируй при необходимости)
 builder.Services.AddScoped<ICoreServiceDbContext, CoreServiceDbContext>();
 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ICoreServiceDbContext).Assembly));
+
 var app = builder.Build();
 
 // 🔹 Swagger UI
@@ -40,6 +43,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.MapControllers(); // <-- работает только если AddControllers() вызван
+app.MapControllers(); 
 
 app.Run();
