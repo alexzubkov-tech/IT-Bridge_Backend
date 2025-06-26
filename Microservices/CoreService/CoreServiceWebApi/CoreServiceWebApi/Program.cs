@@ -1,9 +1,12 @@
-﻿using CoreService.Infrastructure;
+﻿using CoreService.Application.Common.Interfaces;
+using CoreService.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
+
+builder.Services.AddControllers(); // <-- Важно!
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -20,9 +23,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<CoreServiceDbContext>(options =>
     options.UseNpgsql(configuration.GetConnectionString(nameof(CoreServiceDbContext))));
 
-// 🔹 Регистрация интерфейса контекста
-//builder.Services.AddScoped<IAnimalDbContext, AnimalDbContext>();
-
+// 🔹 Регистрация интерфейса контекста (раскомментируй при необходимости)
+builder.Services.AddScoped<ICoreServiceDbContext, CoreServiceDbContext>();
 
 var app = builder.Build();
 
@@ -38,6 +40,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.MapControllers();
+app.MapControllers(); // <-- работает только если AddControllers() вызван
 
 app.Run();

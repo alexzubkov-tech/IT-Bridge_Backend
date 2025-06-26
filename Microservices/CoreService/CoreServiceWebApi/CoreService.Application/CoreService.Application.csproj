@@ -6,4 +6,27 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoreService.Domain\CoreService.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Answer\Commands\" />
+    <Folder Include="Answer\Dtos\" />
+    <Folder Include="Answer\Queries\" />
+    <Folder Include="Question\Commands\" />
+    <Folder Include="Question\Dtos\" />
+    <Folder Include="Question\Queries\" />
+    <Folder Include="UserProfile\Commands\" />
+    <Folder Include="UserProfile\Dtos\" />
+    <Folder Include="UserProfile\Queries\" />
+    <Folder Include="User\Commands\" />
+    <Folder Include="User\Dtos\" />
+    <Folder Include="User\Queries\" />
+  </ItemGroup>
+
 </Project>

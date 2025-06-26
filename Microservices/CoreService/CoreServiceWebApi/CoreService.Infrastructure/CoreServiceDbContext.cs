@@ -1,12 +1,13 @@
-﻿using CoreService.Domain.Entities;
+﻿using CoreService.Application.Common.Interfaces;
+using CoreService.Domain.Entities;
 using CoreService.Infrastructure.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreService.Infrastructure
 {
-    public class CoreServiceDbContext(DbContextOptions<CoreServiceDbContext> options)
-        : DbContext(options)
+    public class CoreServiceDbContext : DbContext, ICoreServiceDbContext
     {
+        public CoreServiceDbContext(DbContextOptions<CoreServiceDbContext> options) : base(options) { }
 
         public DbSet<Answer> Answers { get; set; }
         public DbSet<AnswerRating> AnswerRatings { get; set; }

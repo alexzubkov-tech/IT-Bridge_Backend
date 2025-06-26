@@ -8,14 +8,16 @@
 
   <ItemGroup>
     <Folder Include="Exstensions\" />
-    <Folder Include="Persistence\Postgresql\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.6" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CoreService.Application\CoreService.Application.csproj" />
     <ProjectReference Include="..\CoreService.Domain\CoreService.Domain.csproj" />
   </ItemGroup>
 
