@@ -1,22 +1,42 @@
+﻿using CoreService.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
-// Add services to the container.
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "IT-Bridge API",
+        Version = "v1",
+        Description = "API для менторства"
+    });
+});
 
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// 🔹 Подключение к PostgreSQL
+builder.Services.AddDbContext<CoreServiceDbContext>(options =>
+    options.UseNpgsql(configuration.GetConnectionString(nameof(CoreServiceDbContext))));
+
+// 🔹 Регистрация интерфейса контекста
+//builder.Services.AddScoped<IAnimalDbContext, AnimalDbContext>();
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 🔹 Swagger UI
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "IT-Bridge API v1");
+        options.RoutePrefix = string.Empty;
+        options.DisplayRequestDuration();
+    });
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 
