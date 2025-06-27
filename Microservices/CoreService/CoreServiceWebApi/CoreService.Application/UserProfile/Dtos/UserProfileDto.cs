@@ -1,22 +1,19 @@
-﻿public class UserProfileDto
-{
-    public Guid Id { get; set; }
-    public string UserName { get; set; } = string.Empty;
-    public string FIO { get; set; } = string.Empty;
-    public string Bio { get; set; } = string.Empty;
-    public bool IsExpert { get; set; }
+﻿namespace CoreService.Application.UserProfiles.Dtos;
 
-    public string? GitHubUrl { get; set; }
-    public string? LinkedInUrl { get; set; }
-    public string? ResumeUrl { get; set; }
-
-    public Guid? CompanyId { get; set; }
-    public string? CompanyName { get; set; }
-
-    public int PositionId { get; set; }
-    public int ExperienceYears { get; set; }
-
-    public string Email { get; set; } = string.Empty;
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-}
+public record UserProfileDto(
+    Guid Id,
+    string UserName,
+    string FIO,
+    string Bio,
+    bool IsExpert,
+    string? GitHubUrl,
+    string? LinkedInUrl,
+    string? ResumeUrl,
+    Guid? CompanyId,
+    string? CompanyName,
+    int PositionId,
+    int ExperienceYears,
+    string? TelegramId,
+    string Email,
+    DateTime CreatedAt,
+    DateTime UpdatedAt);

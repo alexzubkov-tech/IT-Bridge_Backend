@@ -2,7 +2,7 @@
 
 namespace CoreService.Application.UserProfiles.Commands.UpdateUserProfile
 {
-    public class UpdateUserProfileCommand : IRequest
+    public class UpdateUserProfileCommand : IRequest<Unit>
     {
         public Guid UserId { get; set; } // или брать из JWT позже
         public string UserName { get; set; } = string.Empty;

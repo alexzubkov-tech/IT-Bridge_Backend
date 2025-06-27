@@ -1,5 +1,6 @@
 ﻿using CoreService.Application.Common.Interfaces;
 using CoreService.Domain.Entities;
+using CoreService.Infrastructure.Configurations;
 using CoreService.Infrastructure.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 

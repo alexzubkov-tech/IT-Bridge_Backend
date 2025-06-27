@@ -23,10 +23,10 @@ public class UserProfileController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("{userId}")]
-    public async Task<IActionResult> GetProfile(Guid userId)
-    {
-        var profile = await _mediator.Send(new GetUserProfileByIdQuery(userId));
-        return Ok(profile);
-    }
+    //[HttpGet("{userId}")]
+    //public async Task<IActionResult> GetProfile(Guid userId)
+    //{
+    //    var profile = await _mediator.Send(new GetUserProfileByIdQuery(userId));
+    //    return Ok(profile);
+    //}
 }
