@@ -1,39 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CoreService.Domain.Entities
+﻿namespace CoreService.Entities
 {
     public class Question
     {
-        public Guid Id { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public string Content { get; set; } = string.Empty;
-        public Guid ProfileUserId { get; set; }
-        public UserProfile ProfileUser { get; set; } = null!;
-        public bool IsUrgent { get; set; }
-        public int ViewCount { get; set; }
-
-        public List<QuestionRating> Ratings { get; set; } = new();
-        public List<Answer> Answers { get; set; } = new();
-        public List<CommentQuestion> Comments { get; set; } = new();
-        public List<CategoryQuestion> CategoryQuestions { get; set; } = new();
-
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public bool IsUrgent { get; set; } = false;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public Question() { }
+        public int UserProfileId { get; set; }
+        public UserProfile UserProfile { get; set; }
 
-        public Question(string title, string content, Guid profileUserId, bool isUrgent)
-        {
-            Id = Guid.NewGuid();
-            Title = title;
-            Content = content;
-            ProfileUserId = profileUserId;
-            IsUrgent = isUrgent;
-            CreatedAt = UpdatedAt = DateTime.UtcNow;
-        }
+        public ICollection<Answer> Answers { get; set; } = new List<Answer>();
+
+        public ICollection<QuestionTag> QuestionTags { get; set; } = new List<QuestionTag>();
+        public ICollection<QuestionCategory> QuestionCategories { get; set; } = new List<QuestionCategory>();
+
+        public ICollection<RatingQuestion> RatingQuestions { get; set; } = new List<RatingQuestion>();
+        public ICollection<CommentQuestion> CommentQuestions { get; set; } = new List<CommentQuestion>();
     }
 }

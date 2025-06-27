@@ -1,35 +1,35 @@
-﻿using Application.Categories.DTOs;
-using CoreService.Application.Common.Interfaces;
-using CoreService.Domain.Entities;
-using MediatR;
+﻿//using Application.Categories.DTOs;
+//using CoreService.Application.Common.Interfaces;
+//using CoreService.Domain.Entities;
+//using MediatR;
 
-namespace Application.Categories.Commands;
+//namespace Application.Categories.Commands;
 
-public record CreateCategoryCommand(CreateCategoryDto CategoryDto) : IRequest<CategoryDto>;
+//public record CreateCategoryCommand(CreateCategoryDto CategoryDto) : IRequest<CategoryDto>;
 
-public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, CategoryDto>
-{
-    private readonly ICoreServiceDbContext _context;
+//public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, CategoryDto>
+//{
+//    private readonly ICoreServiceDbContext _context;
 
-    public CreateCategoryCommandHandler(ICoreServiceDbContext context)
-    {
-        _context = context;
-    }
+//    public CreateCategoryCommandHandler(ICoreServiceDbContext context)
+//    {
+//        _context = context;
+//    }
 
-    public async Task<CategoryDto> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
-    {
-        var entity = new Category
-        {
-            Id = Guid.NewGuid(),
-            Name = request.CategoryDto.Name,
-            Description = request.CategoryDto.Description,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        };
+//    public async Task<CategoryDto> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+//    {
+//        var entity = new Category
+//        {
+//            Id = Guid.NewGuid(),
+//            Name = request.CategoryDto.Name,
+//            Description = request.CategoryDto.Description,
+//            CreatedAt = DateTime.UtcNow,
+//            UpdatedAt = DateTime.UtcNow
+//        };
 
-        _context.Categories.Add(entity);
-        await _context.SaveChangesAsync(cancellationToken);
+//        _context.Categories.Add(entity);
+//        await _context.SaveChangesAsync(cancellationToken);
 
-        return new CategoryDto(entity.Id, entity.Name, entity.Description);
-    }
-}
+//        return new CategoryDto(entity.Id, entity.Name, entity.Description);
+//    }
+//}

@@ -1,23 +1,24 @@
-﻿using CoreService.Domain.Entities;
+﻿using CoreService.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreService.Application.Common.Interfaces
 {
     public interface ICoreServiceDbContext
     {
-        DbSet<Answer> Answers { get; set; }
-        DbSet<AnswerRating> AnswerRatings { get; set; }
-        DbSet<Category> Categories { get; set; }
-        DbSet<CategoryQuestion> CategoryQuestions { get; set; }
-        DbSet<CommentAnswer> CommentAnswers { get; set; }
-        DbSet<CommentQuestion> CommentQuestions { get; set; }
-        DbSet<Company> Companies { get; set; }
-        DbSet<Question> Questions { get; set; }
-        DbSet<QuestionRating> QuestionRatings { get; set; }
-        DbSet<QuestionTag> QuestionTags { get; set; }
-        DbSet<Tag> Tags { get; set; }
-        DbSet<User> Users { get; set; }
-        DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<CommentAnswer> CommentAnswers { get; set; }
+        public DbSet<CommentQuestion> CommentQuestions { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<QuestionCategory> QuestionCategories { get; set; }
+        public DbSet<QuestionTag> QuestionTags { get; set; }
+        public DbSet<RatingAnswer> RatingAnswers { get; set; }
+        public DbSet<RatingQuestion> RatingQuestion { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }
