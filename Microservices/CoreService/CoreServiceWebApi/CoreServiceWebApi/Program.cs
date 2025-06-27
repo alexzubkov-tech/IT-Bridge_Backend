@@ -1,7 +1,9 @@
 ﻿using Application.Account.Commands;
 using CoreService.Application.Common.Interfaces;
-using CoreService.Entities;
+using CoreService.Domain.Entities;
+using CoreService.Domain.Interfaces;
 using CoreService.Infrastructure;
+using CoreService.Infrastructure.Repositories;
 using CoreService.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -90,6 +92,7 @@ builder.Services.AddAuthentication(options =>
 
 // Другие сервисы
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
 
 // MediatR
 builder.Services.AddMediatR(cfg =>

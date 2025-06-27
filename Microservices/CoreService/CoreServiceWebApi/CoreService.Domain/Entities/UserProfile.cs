@@ -1,6 +1,6 @@
-﻿using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+﻿using Microsoft.AspNetCore.Identity;
 
-namespace CoreService.Entities
+namespace CoreService.Domain.Entities
 {
     public class UserProfile
     {

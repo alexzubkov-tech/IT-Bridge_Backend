@@ -1,9 +1,8 @@
 ﻿
 namespace CoreService.Application.UserProfiles.Dtos
 {
-    public class UserProfileDto
+    public class UpdateUserProfileDto
     {
-        public int Id { get; set; }
         public bool IsExpert { get; set; }
         public string FIO { get; set; }
         public string Bio { get; set; }
@@ -15,7 +14,5 @@ namespace CoreService.Application.UserProfiles.Dtos
         public Position Position { get; set; }
         public int? CompanyId { get; set; }
         public int? CategoryId { get; set; }
-
-        public string UserId { get; set; }
     }
 }

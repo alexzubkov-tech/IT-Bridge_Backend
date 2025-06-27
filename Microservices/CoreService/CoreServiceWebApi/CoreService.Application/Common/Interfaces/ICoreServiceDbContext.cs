@@ -1,4 +1,4 @@
-﻿using CoreService.Entities;
+﻿using CoreService.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreService.Application.Common.Interfaces

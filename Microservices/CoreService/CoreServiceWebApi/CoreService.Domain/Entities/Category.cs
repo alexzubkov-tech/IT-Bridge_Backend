@@ -1,4 +1,4 @@
-﻿namespace CoreService.Entities
+﻿namespace CoreService.Domain.Entities
 {
     public class Category
     {

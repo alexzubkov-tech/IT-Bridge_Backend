@@ -1,58 +1,63 @@
-﻿//using MediatR;
-//using CoreService.Application.Common.Interfaces;
-//using Microsoft.EntityFrameworkCore;
+﻿using CoreService.Application.UserProfiles.Dtos;
+using CoreService.Domain.Entities;
+using CoreService.Domain.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
 
-//namespace CoreService.Application.UserProfiles.Commands.UpdateUserProfile
-//{
-//    public class UpdateUserProfileCommandHandler : IRequestHandler<UpdateUserProfileCommand, Unit>
-//    {
-//        private readonly ICoreServiceDbContext _context;
+namespace CoreService.Application.UserProfiles.Commands.UpdateUserProfileCommand
+{
+    public class UpdateUserProfileCommandHandler : IRequestHandler<UpdateUserProfileCommand, UserProfileDto>
+    {
+        private readonly IUserProfileRepository _userProfileRepository;
 
-//        public UpdateUserProfileCommandHandler(ICoreServiceDbContext context)
-//        {
-//            _context = context;
-//        }
+        public UpdateUserProfileCommandHandler(IUserProfileRepository userProfileRepository)
+        {
+            _userProfileRepository = userProfileRepository;
+        }
 
-//        public async Task<Unit> Handle(UpdateUserProfileCommand request, CancellationToken cancellationToken)
-//        {
-//            var user = await _context.Users
-//                .Include(u => u.UserProfile)
-//                .FirstOrDefaultAsync(u => u.Id == request.UserId, cancellationToken);
+        public async Task<UserProfileDto> Handle(UpdateUserProfileCommand request, CancellationToken cancellationToken)
+        {
+            var profile = await _userProfileRepository.GetByIdAsync(request.Id);
+            if (profile == null)
+                throw new KeyNotFoundException("User profile not found");
 
-//            if (user == null)
-//                throw new Exception("User not found.");
+            var dto = request.Dto;
+            profile.IsExpert = dto.IsExpert;
+            profile.FIO = dto.FIO;
+            profile.Bio = dto.Bio;
+            profile.GithubUrl = dto.GithubUrl;
+            profile.LinkedinUrl = dto.LinkedinUrl;
+            profile.TelegramId = dto.TelegramId;
+            profile.ResumeLink = dto.ResumeLink;
+            profile.ExperienceYears = dto.ExperienceYears;
+            profile.Position = dto.Position;
+            profile.CompanyId = dto.CompanyId;
+            profile.CategoryId = dto.CategoryId;
+            profile.UpdatedAt = DateTime.UtcNow;
 
-//            var profile = user.UserProfile;
+            await _userProfileRepository.UpdateAsync(profile);
 
-//            profile.FIO = request.FIO;
-//            profile.Bio = request.Bio;
-//            profile.IsExpert = request.IsExpert;
-//            profile.UserName = request.UserName;
+            return MapToDto(profile);
+        }
 
-//            if (request.IsExpert)
-//            {
-//                profile.GitHubUrl = request.GitHubUrl;
-//                profile.LinkedInUrl = request.LinkedInUrl;
-//                profile.CompanyId = request.CompanyId;
-//                profile.PositionId = request.PositionId ?? 0;
-//                profile.ExperienceYears = request.ExperienceYears ?? 0;
-//                profile.ResumeUrl = null; // Очистим, если вдруг было
-//            }
-//            else
-//            {
-//                profile.ResumeUrl = request.ResumeUrl;
-//                profile.GitHubUrl = null;
-//                profile.LinkedInUrl = null;
-//                profile.CompanyId = null;
-//                profile.PositionId = 0;
-//                profile.ExperienceYears = 0;
-//            }
-
-//            profile.UpdatedAt = DateTime.UtcNow;
-
-//            await _context.SaveChangesAsync(cancellationToken);
-
-//            return Unit.Value;
-//        }
-//    }
-//}
+        private static UserProfileDto MapToDto(UserProfile profile)
+        {
+            return new UserProfileDto
+            {
+                Id = profile.Id,
+                IsExpert = profile.IsExpert,
+                FIO = profile.FIO,
+                Bio = profile.Bio,
+                GithubUrl = profile.GithubUrl,
+                LinkedinUrl = profile.LinkedinUrl,
+                TelegramId = profile.TelegramId,
+                ResumeLink = profile.ResumeLink,
+                ExperienceYears = profile.ExperienceYears,
+                Position = profile.Position,
+                CompanyId = profile.CompanyId,
+                CategoryId = profile.CategoryId,
+                UserId = profile.UserId
+            };
+        }
+    }
+}
