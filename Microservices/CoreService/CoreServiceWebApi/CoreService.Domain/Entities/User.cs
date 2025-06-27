@@ -4,21 +4,23 @@ namespace CoreService.Domain.Entities
 {
     public class User
     {
-        public Guid Id { get; set; }
-        public string UserName { get; set; } = string.Empty;
+        public Guid Id { get; set; } // Это UserId
+        public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
-        public Guid UserProfileId { get; set; } // ну типо связь 1 -> 1
+
+        // Связь 1 к 1: User -> UserProfile
+        public Guid UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; } = null!;
+
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        // для EF core, чтобы создались миграции
         public User() { }
 
-        public User(string userName, string passwordHash, Guid userProfileId)
+        public User(string email, string passwordHash, Guid userProfileId)
         {
             Id = Guid.NewGuid();
-            UserName = userName;
+            Email = email;
             PasswordHash = passwordHash;
             UserProfileId = userProfileId;
             CreatedAt = UpdatedAt = DateTime.UtcNow;

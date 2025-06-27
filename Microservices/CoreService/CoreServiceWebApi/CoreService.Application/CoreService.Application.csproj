@@ -19,8 +19,6 @@
     <Folder Include="Answer\Commands\" />
     <Folder Include="Answer\Dtos\" />
     <Folder Include="Answer\Queries\" />
-    <Folder Include="Question\Commands\" />
-    <Folder Include="Question\Dtos\" />
     <Folder Include="Question\Queries\" />
     <Folder Include="UserProfile\Commands\" />
     <Folder Include="UserProfile\Dtos\" />
