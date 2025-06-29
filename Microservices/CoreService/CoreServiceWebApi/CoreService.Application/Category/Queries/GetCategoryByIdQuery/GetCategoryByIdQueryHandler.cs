@@ -5,7 +5,7 @@ using MediatR;
 
 namespace CoreService.Application.Categories.Queries.GetCategoryByIdQuery
 {
-    public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, CategoryWithProfilesDto>
+    public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, CategoryDetailsDto>
     {
         private readonly ICategoryRepository _categoryRepository;
 
@@ -14,13 +14,13 @@ namespace CoreService.Application.Categories.Queries.GetCategoryByIdQuery
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<CategoryWithProfilesDto> Handle(GetCategoryByIdQuery request, CancellationToken ct)
+        public async Task<CategoryDetailsDto> Handle(GetCategoryByIdQuery request, CancellationToken ct)
         {
             var category = await _categoryRepository.GetByIdAsync(request.Id);
             if (category == null)
                 throw new KeyNotFoundException("Category not found");
 
-            return category.ToWithProfilesDto();
+            return category.ToDetailsDto();
         }
     }
 }

@@ -17,6 +17,9 @@ namespace CoreService.Infrastructure.Repositories
         {
             return await _context.Categories
                 .Include(c => c.UserProfiles)
+                    .ThenInclude(up => up.Company)
+                .Include(c => c.QuestionCategories)
+                    .ThenInclude(qc => qc.Question)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
