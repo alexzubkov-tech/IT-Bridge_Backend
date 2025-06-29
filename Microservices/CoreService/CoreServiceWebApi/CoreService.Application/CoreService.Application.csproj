@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Answer\**" />
+    <EmbeddedResource Remove="Answer\**" />
+    <None Remove="Answer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR" Version="12.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
@@ -15,12 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CoreService.Domain\CoreService.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Answer\Commands\" />
-    <Folder Include="Answer\Dtos\" />
-    <Folder Include="Answer\Queries\" />
   </ItemGroup>
 
 </Project>
