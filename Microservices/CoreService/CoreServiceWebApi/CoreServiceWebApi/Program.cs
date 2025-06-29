@@ -93,6 +93,8 @@ builder.Services.AddAuthentication(options =>
 // Другие сервисы
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 
 // MediatR
 builder.Services.AddMediatR(cfg =>
