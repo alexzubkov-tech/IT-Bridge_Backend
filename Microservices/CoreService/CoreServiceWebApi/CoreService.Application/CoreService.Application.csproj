@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.12.1" />
   </ItemGroup>
@@ -20,7 +21,6 @@
     <Folder Include="Answer\Commands\" />
     <Folder Include="Answer\Dtos\" />
     <Folder Include="Answer\Queries\" />
-    <Folder Include="UserProfile\Queries\" />
   </ItemGroup>
 
 </Project>

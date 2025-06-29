@@ -1,5 +1,4 @@
-﻿
-using CoreService.Application.Common.Interfaces;
+﻿using CoreService.Application.Common.Interfaces;
 using CoreService.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -22,7 +21,6 @@ namespace CoreService.Services
 
         public async Task<string> CreateToken(User user, int? userProfileId = null)
         {
-
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
@@ -37,7 +35,7 @@ namespace CoreService.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = creds,
                 Issuer = _config["JWT:Issuer"],
                 Audience = _config["JWT:Audience"]

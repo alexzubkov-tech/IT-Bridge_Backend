@@ -1,4 +1,5 @@
 ﻿using CoreService.Application.UserProfiles.Dtos;
+using CoreService.Application.UserProfiles.Mapper;
 using CoreService.Domain.Entities;
 using CoreService.Domain.Interfaces;
 using MediatR;
@@ -21,43 +22,11 @@ namespace CoreService.Application.UserProfiles.Commands.UpdateUserProfileCommand
             if (profile == null)
                 throw new KeyNotFoundException("User profile not found");
 
-            var dto = request.Dto;
-            profile.IsExpert = dto.IsExpert;
-            profile.FIO = dto.FIO;
-            profile.Bio = dto.Bio;
-            profile.GithubUrl = dto.GithubUrl;
-            profile.LinkedinUrl = dto.LinkedinUrl;
-            profile.TelegramId = dto.TelegramId;
-            profile.ResumeLink = dto.ResumeLink;
-            profile.ExperienceYears = dto.ExperienceYears;
-            profile.Position = dto.Position;
-            profile.CompanyId = dto.CompanyId;
-            profile.CategoryId = dto.CategoryId;
-            profile.UpdatedAt = DateTime.UtcNow;
+            profile.UpdateEntityFromDto(request.Dto);
 
             await _userProfileRepository.UpdateAsync(profile);
 
-            return MapToDto(profile);
-        }
-
-        private static UserProfileDto MapToDto(UserProfile profile)
-        {
-            return new UserProfileDto
-            {
-                Id = profile.Id,
-                IsExpert = profile.IsExpert,
-                FIO = profile.FIO,
-                Bio = profile.Bio,
-                GithubUrl = profile.GithubUrl,
-                LinkedinUrl = profile.LinkedinUrl,
-                TelegramId = profile.TelegramId,
-                ResumeLink = profile.ResumeLink,
-                ExperienceYears = profile.ExperienceYears,
-                Position = profile.Position,
-                CompanyId = profile.CompanyId,
-                CategoryId = profile.CategoryId,
-                UserId = profile.UserId
-            };
+            return profile.ToDto();
         }
     }
 }

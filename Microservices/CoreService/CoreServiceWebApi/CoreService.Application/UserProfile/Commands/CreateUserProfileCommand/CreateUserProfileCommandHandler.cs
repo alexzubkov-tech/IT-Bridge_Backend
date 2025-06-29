@@ -1,4 +1,5 @@
 ﻿using CoreService.Application.UserProfiles.Dtos;
+using CoreService.Application.UserProfiles.Mapper;
 using CoreService.Domain.Entities;
 using CoreService.Domain.Interfaces;
 using MediatR;
@@ -31,55 +32,16 @@ namespace CoreService.Application.UserProfiles.Commands.CreateUserProfileCommand
                 if (user == null)
                     throw new KeyNotFoundException("User not found");
 
-                var dto = request.Dto;
-                var profile = new UserProfile
-                {
-                    UserId = user.Id,
-                    IsExpert = dto.IsExpert,
-                    FIO = dto.FIO,
-                    Bio = dto.Bio,
-                    GithubUrl = dto.GithubUrl,
-                    LinkedinUrl = dto.LinkedinUrl,
-                    TelegramId = dto.TelegramId,
-                    ResumeLink = dto.ResumeLink,
-                    ExperienceYears = dto.ExperienceYears,
-                    Position = dto.Position,
-                    CompanyId = dto.CompanyId,
-                    CategoryId = dto.CategoryId,
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
-                };
-
+                var profile = request.Dto.ToEntity(user.Id);
                 await _userProfileRepository.CreateAsync(profile);
 
-                return MapToDto(profile);
+                return profile.ToDto();
             }
             catch (Exception ex)
             {
-                // Логируем исключение (например, через ILogger)
                 _logger.LogError(ex, "Error creating user profile.");
-                throw; // перебрасываем исключение дальше
+                throw; 
             }
-        }
-
-        private static UserProfileDto MapToDto(UserProfile profile)
-        {
-            return new UserProfileDto
-            {
-                Id = profile.Id,
-                IsExpert = profile.IsExpert,
-                FIO = profile.FIO,
-                Bio = profile.Bio,
-                GithubUrl = profile.GithubUrl,
-                LinkedinUrl = profile.LinkedinUrl,
-                TelegramId = profile.TelegramId,
-                ResumeLink = profile.ResumeLink,
-                ExperienceYears = profile.ExperienceYears,
-                Position = profile.Position,
-                CompanyId = profile.CompanyId,
-                CategoryId = profile.CategoryId,
-                UserId = profile.UserId
-            };
         }
     }
 }

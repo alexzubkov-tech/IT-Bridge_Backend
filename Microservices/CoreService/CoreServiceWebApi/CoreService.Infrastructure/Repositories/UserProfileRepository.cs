@@ -23,6 +23,14 @@ namespace CoreService.Infrastructure.Repositories
                 .FirstOrDefaultAsync(up => up.Id == id);
         }
 
+        public async Task<UserProfile> GetByUserIdAsync(string userId)
+        {
+            return await _context.UserProfiles
+                .Include(up => up.Company)
+                .Include(up => up.Category)
+                .FirstOrDefaultAsync(up => up.UserId == userId);
+        }
+
         public async Task<IEnumerable<UserProfile>> GetAllAsync()
         {
             return await _context.UserProfiles
