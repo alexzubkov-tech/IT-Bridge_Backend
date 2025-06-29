@@ -100,6 +100,7 @@ builder.Services.AddScoped<ICommentQuestionRepository, CommentQuestionRepository
 builder.Services.AddScoped<IRatingQuestionRepository, RatingQuestionRepository>();
 builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
 builder.Services.AddScoped<ICommentAnswerRepository, CommentAnswerRepository>();
+builder.Services.AddScoped<IRatingAnswerRepository, RatingAnswerRepository>();
 
 
 // MediatR
