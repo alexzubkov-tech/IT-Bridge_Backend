@@ -14,7 +14,7 @@ namespace CoreService.Application.Common.Interfaces
         public DbSet<QuestionCategory> QuestionCategories { get; set; }
         public DbSet<QuestionTag> QuestionTags { get; set; }
         public DbSet<RatingAnswer> RatingAnswers { get; set; }
-        public DbSet<RatingQuestion> RatingQuestion { get; set; }
+        public DbSet<RatingQuestion> RatingQuestions { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }

@@ -301,7 +301,7 @@ namespace CoreService.Infrastructure.Migrations
                     b.ToTable("RatingAnswers");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.RatingQuestion", b =>
+            modelBuilder.Entity("CoreService.Entities.RatingQuestions", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -330,7 +330,7 @@ namespace CoreService.Infrastructure.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("RatingQuestion");
+                    b.ToTable("RatingQuestions");
                 });
 
             modelBuilder.Entity("CoreService.Entities.Tag", b =>
@@ -746,7 +746,7 @@ namespace CoreService.Infrastructure.Migrations
                     b.Navigation("UserProfile");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.RatingQuestion", b =>
+            modelBuilder.Entity("CoreService.Entities.RatingQuestions", b =>
                 {
                     b.HasOne("CoreService.Entities.Question", "Question")
                         .WithMany("RatingQuestions")
