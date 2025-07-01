@@ -31,7 +31,6 @@ namespace CoreService.Application.CommentAnswers.Mapper
             {
                 Id = entity.Id,
                 Content = entity.Content,
-                CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt,
                 UserProfileId = entity.UserProfileId,
                 AnswerId = entity.AnswerId

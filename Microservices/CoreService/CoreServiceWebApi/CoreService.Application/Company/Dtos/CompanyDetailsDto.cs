@@ -2,7 +2,7 @@
 
 namespace CoreService.Application.Companies.Dtos
 {
-    public class CompanyDto
+    public class CompanyDetailsDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -14,5 +14,7 @@ namespace CoreService.Application.Companies.Dtos
         public string PhoneNumber { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
+        public List<UserProfileDto> Staff { get; set; } = new();
     }
 }

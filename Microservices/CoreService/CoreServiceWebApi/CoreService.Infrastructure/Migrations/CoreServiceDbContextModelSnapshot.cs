@@ -22,7 +22,7 @@ namespace CoreService.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CoreService.Entities.Answer", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.Answer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +55,7 @@ namespace CoreService.Infrastructure.Migrations
                     b.ToTable("Answers");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.Category", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,7 +82,7 @@ namespace CoreService.Infrastructure.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.CommentAnswer", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.CommentAnswer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,7 +115,7 @@ namespace CoreService.Infrastructure.Migrations
                     b.ToTable("CommentAnswers");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.CommentQuestion", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.CommentQuestion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -148,7 +148,7 @@ namespace CoreService.Infrastructure.Migrations
                     b.ToTable("CommentQuestions");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.Company", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.Company", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -192,7 +192,7 @@ namespace CoreService.Infrastructure.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.Question", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.Question", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -227,7 +227,7 @@ namespace CoreService.Infrastructure.Migrations
                     b.ToTable("Questions");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.QuestionCategory", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.QuestionCategory", b =>
                 {
                     b.Property<int>("QuestionId")
                         .HasColumnType("integer");
@@ -248,7 +248,7 @@ namespace CoreService.Infrastructure.Migrations
                     b.ToTable("QuestionCategories");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.QuestionTag", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.QuestionTag", b =>
                 {
                     b.Property<int>("QuestionId")
                         .HasColumnType("integer");
@@ -269,19 +269,19 @@ namespace CoreService.Infrastructure.Migrations
                     b.ToTable("QuestionTags");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.RatingAnswer", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.RatingAnswer", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("AnswerId")
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AnswerId")
+                    b.Property<int>("UserProfileId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsGoodAnswer")
                         .HasColumnType("boolean");
@@ -289,51 +289,41 @@ namespace CoreService.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("UserProfileId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnswerId");
+                    b.HasKey("AnswerId", "UserProfileId");
 
                     b.HasIndex("UserProfileId");
 
                     b.ToTable("RatingAnswers");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.RatingQuestions", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.RatingQuestion", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsGoodAnswer")
-                        .HasColumnType("boolean");
-
                     b.Property<int>("QuestionId")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("UserProfileId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.HasIndex("QuestionId");
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsGoodAnswer")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("QuestionId", "UserProfileId");
 
                     b.HasIndex("UserProfileId");
 
                     b.ToTable("RatingQuestions");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.Tag", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -356,7 +346,7 @@ namespace CoreService.Infrastructure.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.User", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -420,7 +410,7 @@ namespace CoreService.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("CoreService.Entities.UserProfile", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.UserProfile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -621,15 +611,15 @@ namespace CoreService.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CoreService.Entities.Answer", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.Answer", b =>
                 {
-                    b.HasOne("CoreService.Entities.Question", "Question")
+                    b.HasOne("CoreService.Domain.Entities.Question", "Question")
                         .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoreService.Entities.UserProfile", "UserProfile")
+                    b.HasOne("CoreService.Domain.Entities.UserProfile", "UserProfile")
                         .WithMany("Answers")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -640,15 +630,15 @@ namespace CoreService.Infrastructure.Migrations
                     b.Navigation("UserProfile");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.CommentAnswer", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.CommentAnswer", b =>
                 {
-                    b.HasOne("CoreService.Entities.Answer", "Answer")
+                    b.HasOne("CoreService.Domain.Entities.Answer", "Answer")
                         .WithMany("CommentAnswers")
                         .HasForeignKey("AnswerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoreService.Entities.UserProfile", "UserProfile")
+                    b.HasOne("CoreService.Domain.Entities.UserProfile", "UserProfile")
                         .WithMany("CommentAnswers")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -659,15 +649,15 @@ namespace CoreService.Infrastructure.Migrations
                     b.Navigation("UserProfile");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.CommentQuestion", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.CommentQuestion", b =>
                 {
-                    b.HasOne("CoreService.Entities.Question", "Question")
+                    b.HasOne("CoreService.Domain.Entities.Question", "Question")
                         .WithMany("CommentQuestions")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoreService.Entities.UserProfile", "UserProfile")
+                    b.HasOne("CoreService.Domain.Entities.UserProfile", "UserProfile")
                         .WithMany("CommentQuestions")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -678,9 +668,9 @@ namespace CoreService.Infrastructure.Migrations
                     b.Navigation("UserProfile");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.Question", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.Question", b =>
                 {
-                    b.HasOne("CoreService.Entities.UserProfile", "UserProfile")
+                    b.HasOne("CoreService.Domain.Entities.UserProfile", "UserProfile")
                         .WithMany("Questions")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -689,15 +679,15 @@ namespace CoreService.Infrastructure.Migrations
                     b.Navigation("UserProfile");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.QuestionCategory", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.QuestionCategory", b =>
                 {
-                    b.HasOne("CoreService.Entities.Category", "Category")
+                    b.HasOne("CoreService.Domain.Entities.Category", "Category")
                         .WithMany("QuestionCategories")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoreService.Entities.Question", "Question")
+                    b.HasOne("CoreService.Domain.Entities.Question", "Question")
                         .WithMany("QuestionCategories")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -708,15 +698,15 @@ namespace CoreService.Infrastructure.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.QuestionTag", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.QuestionTag", b =>
                 {
-                    b.HasOne("CoreService.Entities.Question", "Question")
+                    b.HasOne("CoreService.Domain.Entities.Question", "Question")
                         .WithMany("QuestionTags")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoreService.Entities.Tag", "Tag")
+                    b.HasOne("CoreService.Domain.Entities.Tag", "Tag")
                         .WithMany("QuestionTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -727,15 +717,15 @@ namespace CoreService.Infrastructure.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.RatingAnswer", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.RatingAnswer", b =>
                 {
-                    b.HasOne("CoreService.Entities.Answer", "Answer")
+                    b.HasOne("CoreService.Domain.Entities.Answer", "Answer")
                         .WithMany("RatingAnswers")
                         .HasForeignKey("AnswerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoreService.Entities.UserProfile", "UserProfile")
+                    b.HasOne("CoreService.Domain.Entities.UserProfile", "UserProfile")
                         .WithMany("RatingAnswers")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -746,15 +736,15 @@ namespace CoreService.Infrastructure.Migrations
                     b.Navigation("UserProfile");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.RatingQuestions", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.RatingQuestion", b =>
                 {
-                    b.HasOne("CoreService.Entities.Question", "Question")
+                    b.HasOne("CoreService.Domain.Entities.Question", "Question")
                         .WithMany("RatingQuestions")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoreService.Entities.UserProfile", "UserProfile")
+                    b.HasOne("CoreService.Domain.Entities.UserProfile", "UserProfile")
                         .WithMany("RatingQuestions")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -765,19 +755,19 @@ namespace CoreService.Infrastructure.Migrations
                     b.Navigation("UserProfile");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.UserProfile", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.UserProfile", b =>
                 {
-                    b.HasOne("CoreService.Entities.Category", "Category")
+                    b.HasOne("CoreService.Domain.Entities.Category", "Category")
                         .WithMany("UserProfiles")
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("CoreService.Entities.Company", "Company")
+                    b.HasOne("CoreService.Domain.Entities.Company", "Company")
                         .WithMany("UserProfiles")
                         .HasForeignKey("CompanyId");
 
-                    b.HasOne("CoreService.Entities.User", "User")
+                    b.HasOne("CoreService.Domain.Entities.User", "User")
                         .WithOne("UserProfile")
-                        .HasForeignKey("CoreService.Entities.UserProfile", "UserId")
+                        .HasForeignKey("CoreService.Domain.Entities.UserProfile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -799,7 +789,7 @@ namespace CoreService.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("CoreService.Entities.User", null)
+                    b.HasOne("CoreService.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -808,7 +798,7 @@ namespace CoreService.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("CoreService.Entities.User", null)
+                    b.HasOne("CoreService.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -823,7 +813,7 @@ namespace CoreService.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoreService.Entities.User", null)
+                    b.HasOne("CoreService.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -832,33 +822,33 @@ namespace CoreService.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("CoreService.Entities.User", null)
+                    b.HasOne("CoreService.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CoreService.Entities.Answer", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.Answer", b =>
                 {
                     b.Navigation("CommentAnswers");
 
                     b.Navigation("RatingAnswers");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.Category", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.Category", b =>
                 {
                     b.Navigation("QuestionCategories");
 
                     b.Navigation("UserProfiles");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.Company", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.Company", b =>
                 {
                     b.Navigation("UserProfiles");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.Question", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.Question", b =>
                 {
                     b.Navigation("Answers");
 
@@ -871,18 +861,18 @@ namespace CoreService.Infrastructure.Migrations
                     b.Navigation("RatingQuestions");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.Tag", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.Tag", b =>
                 {
                     b.Navigation("QuestionTags");
                 });
 
-            modelBuilder.Entity("CoreService.Entities.User", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.User", b =>
                 {
                     b.Navigation("UserProfile")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CoreService.Entities.UserProfile", b =>
+            modelBuilder.Entity("CoreService.Domain.Entities.UserProfile", b =>
                 {
                     b.Navigation("Answers");
 

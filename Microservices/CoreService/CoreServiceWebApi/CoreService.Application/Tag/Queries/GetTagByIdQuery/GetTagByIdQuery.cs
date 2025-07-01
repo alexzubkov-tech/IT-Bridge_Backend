@@ -3,6 +3,6 @@ using MediatR;
 
 namespace CoreService.Application.Tags.Queries.GetTagByIdQuery
 {
-    public record GetTagByIdQuery(int Id) : IRequest<TagWithQuestionsDto>;
+    public record GetTagByIdQuery(int Id) : IRequest<TagDto>;
 }
 

@@ -8,6 +8,7 @@ namespace CoreService.Domain.Interfaces
     {
         Task<RatingQuestion> GetByIdAsync(int id);
         Task<IEnumerable<RatingQuestion>> GetAllAsync();
+        Task<IEnumerable<RatingQuestion>> GetAllToQuestionAsync(int id);
         Task<int> CreateAsync(RatingQuestion rating);
         Task<bool> UpdateAsync(RatingQuestion rating);
         Task<bool> DeleteAsync(int id);

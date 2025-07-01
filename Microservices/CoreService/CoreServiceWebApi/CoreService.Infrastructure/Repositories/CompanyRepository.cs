@@ -15,7 +15,9 @@ namespace CoreService.Infrastructure.Repositories
 
         public async Task<Company> GetByIdAsync(int id, CancellationToken ct)
         {
-            return await _context.Companies.FirstOrDefaultAsync(c => c.Id == id, ct);
+            return await _context.Companies
+                .Include(c => c.UserProfiles)
+                .FirstOrDefaultAsync(c => c.Id == id, ct);
         }
 
         public async Task<IEnumerable<Company>> GetAllAsync(CancellationToken ct)

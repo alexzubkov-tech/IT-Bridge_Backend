@@ -29,6 +29,15 @@ namespace CoreService.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<CommentQuestion>> GetAllToQuestionAsync(int id)
+        {
+            return await _context.CommentQuestions
+                .Where(cq => cq.QuestionId == id)
+                .Include(c => c.UserProfile)
+                .Include(c => c.Question)
+                .ToListAsync();
+        }
+
         public async Task<int> CreateAsync(CommentQuestion comment)
         {
             await _context.CommentQuestions.AddAsync(comment);

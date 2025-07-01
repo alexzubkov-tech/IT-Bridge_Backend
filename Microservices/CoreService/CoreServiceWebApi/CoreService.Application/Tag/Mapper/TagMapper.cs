@@ -1,4 +1,10 @@
-﻿using CoreService.Application.Tags.Dtos;
+﻿using CoreService.Application.Answers.Dtos;
+using CoreService.Application.Categories.Dtos;
+using CoreService.Application.CommentQuestions.Dtos;
+using CoreService.Application.Questions.Dtos;
+using CoreService.Application.RatingQuestions.Dtos;
+using CoreService.Application.Tags.Dtos;
+using CoreService.Application.UserProfiles.Mapper;
 using CoreService.Domain.Entities;
 
 namespace CoreService.Application.Tags.Mapper
@@ -27,21 +33,20 @@ namespace CoreService.Application.Tags.Mapper
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt
             };
         }
 
-        public static TagWithQuestionsDto ToTagWithQuestionsDto(this Tag entity)
+        public static TagDetailsDto ToDetailsDto(this Tag entity)
         {
-            return new TagWithQuestionsDto
+            return new TagDetailsDto
             {
                 Id = entity.Id,
                 Name = entity.Name,
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt,
                 Questions = entity.QuestionTags
-                    .Select(qt => new QuestionInTagDto
+                    .Select(qt => new QuestionDto
                     {
                         Id = qt.Question.Id,
                         Title = qt.Question.Title,

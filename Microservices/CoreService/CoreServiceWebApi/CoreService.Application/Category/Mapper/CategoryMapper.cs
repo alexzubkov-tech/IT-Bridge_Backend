@@ -32,7 +32,6 @@ namespace CoreService.Application.Categories.Mapper
                 Id = entity.Id,
                 Name = entity.Name,
                 Description = entity.Description,
-                CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt
             };
         }

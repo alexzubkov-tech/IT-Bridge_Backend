@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using CoreService.Domain.Entities;
+﻿using CoreService.Domain.Entities;
 using CoreService.Domain.Interfaces;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoreService.Infrastructure.Repositories
 {
@@ -17,25 +18,37 @@ namespace CoreService.Infrastructure.Repositories
         {
             return await _context.Questions
                 .Include(q => q.UserProfile)
-                .Include(q => q.Answers).ThenInclude(a => a.UserProfile)
-                .Include(q => q.QuestionTags).ThenInclude(qt => qt.Tag)
-                .Include(q => q.QuestionCategories).ThenInclude(qc => qc.Category)
-                .Include(q => q.RatingQuestions).ThenInclude(rq => rq.UserProfile)
-                .Include(q => q.CommentQuestions).ThenInclude(cq => cq.UserProfile)
+                    .ThenInclude(u => u.User)
+                .Include(q => q.Answers)
+                    .ThenInclude(a => a.UserProfile)
+                .Include(q => q.CommentQuestions)
+                    .ThenInclude(cq => cq.UserProfile)
+                .Include(q => q.RatingQuestions)
+                    .ThenInclude(rq => rq.UserProfile)
+                .Include(q => q.QuestionTags)
+                    .ThenInclude(qt => qt.Tag)
+                .Include(q => q.QuestionCategories)
+                    .ThenInclude(qc => qc.Category)
                 .FirstOrDefaultAsync(q => q.Id == id, ct);
         }
 
         public async Task<Question?> GetByIdAsync(int id, CancellationToken ct)
         {
             return await _context.Questions
-                .Include(q => q.UserProfile)
+                .Include(q => q.QuestionTags)
+                    .ThenInclude(qt => qt.Tag)
+                .Include(q => q.QuestionCategories)
+                    .ThenInclude(qc => qc.Category)
                 .FirstOrDefaultAsync(q => q.Id == id, ct);
         }
 
         public async Task<IEnumerable<Question>> GetAllAsync(CancellationToken ct)
         {
             return await _context.Questions
-                .Include(q => q.UserProfile)
+                .Include(q => q.QuestionTags)
+                    .ThenInclude(qt => qt.Tag)
+                .Include(q => q.QuestionCategories)
+                    .ThenInclude(qc => qc.Category)
                 .ToListAsync(ct);
         }
 

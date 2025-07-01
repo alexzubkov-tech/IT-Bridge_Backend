@@ -386,28 +386,27 @@ namespace CoreService.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RatingQuestion",
+                name: "RatingQuestions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserProfileId = table.Column<int>(type: "integer", nullable: false),
+                    QuestionId = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false),
                     IsGoodAnswer = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UserProfileId = table.Column<int>(type: "integer", nullable: false),
-                    QuestionId = table.Column<int>(type: "integer", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RatingQuestion", x => x.Id);
+                    table.PrimaryKey("PK_RatingQuestions", x => new { x.QuestionId, x.UserProfileId });
                     table.ForeignKey(
-                        name: "FK_RatingQuestion_Questions_QuestionId",
+                        name: "FK_RatingQuestions_Questions_QuestionId",
                         column: x => x.QuestionId,
                         principalTable: "Questions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RatingQuestion_UserProfiles_UserProfileId",
+                        name: "FK_RatingQuestions_UserProfiles_UserProfileId",
                         column: x => x.UserProfileId,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
@@ -447,17 +446,16 @@ namespace CoreService.Infrastructure.Migrations
                 name: "RatingAnswers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserProfileId = table.Column<int>(type: "integer", nullable: false),
+                    AnswerId = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false),
                     IsGoodAnswer = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UserProfileId = table.Column<int>(type: "integer", nullable: false),
-                    AnswerId = table.Column<int>(type: "integer", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RatingAnswers", x => x.Id);
+                    table.PrimaryKey("PK_RatingAnswers", x => new { x.AnswerId, x.UserProfileId });
                     table.ForeignKey(
                         name: "FK_RatingAnswers_Answers_AnswerId",
                         column: x => x.AnswerId,
@@ -555,23 +553,13 @@ namespace CoreService.Infrastructure.Migrations
                 column: "TagId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RatingAnswers_AnswerId",
-                table: "RatingAnswers",
-                column: "AnswerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RatingAnswers_UserProfileId",
                 table: "RatingAnswers",
                 column: "UserProfileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RatingQuestion_QuestionId",
-                table: "RatingQuestion",
-                column: "QuestionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RatingQuestion_UserProfileId",
-                table: "RatingQuestion",
+                name: "IX_RatingQuestions_UserProfileId",
+                table: "RatingQuestions",
                 column: "UserProfileId");
 
             migrationBuilder.CreateIndex(
@@ -625,7 +613,7 @@ namespace CoreService.Infrastructure.Migrations
                 name: "RatingAnswers");
 
             migrationBuilder.DropTable(
-                name: "RatingQuestion");
+                name: "RatingQuestions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -29,7 +29,6 @@ namespace CoreService.Application.RatingQuestions.Mapper
             {
                 Id = entity.Id,
                 IsGoodAnswer = entity.IsGoodAnswer,
-                CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt,
                 UserProfileId = entity.UserProfileId,
                 QuestionId = entity.QuestionId
