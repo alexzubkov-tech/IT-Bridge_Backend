@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CoreService.Application.Answers.Queries.GetAnswerByIdQuery
 {
-    public class GetAnswerByIdQueryHandler : IRequestHandler<GetAnswerByIdQuery, AnswerDto>
+    public class GetAnswerByIdQueryHandler : IRequestHandler<GetAnswerByIdQuery, AnswerDetailsDto>
     {
         private readonly IAnswerRepository _repository;
         private readonly ILogger<GetAnswerByIdQueryHandler> _logger;
@@ -18,7 +18,7 @@ namespace CoreService.Application.Answers.Queries.GetAnswerByIdQuery
             _logger = logger;
         }
 
-        public async Task<AnswerDto> Handle(GetAnswerByIdQuery request, CancellationToken ct)
+        public async Task<AnswerDetailsDto> Handle(GetAnswerByIdQuery request, CancellationToken ct)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace CoreService.Application.Answers.Queries.GetAnswerByIdQuery
                 if (entity == null)
                     throw new KeyNotFoundException("Answer not found");
 
-                return entity.ToDto();
+                return entity.ToDetailsDto();
             }
             catch (Exception ex)
             {

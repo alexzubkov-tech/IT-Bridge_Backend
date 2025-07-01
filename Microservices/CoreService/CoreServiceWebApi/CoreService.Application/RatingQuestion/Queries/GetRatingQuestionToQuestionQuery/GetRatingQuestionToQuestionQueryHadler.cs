@@ -10,25 +10,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoreService.Application.Questions.Queries.GetQuestionRatingQuestionQuery
+namespace CoreService.Application.RatingQuestions.Queries.GetQuestionRatingQuestionsQuery
 {
-    public class GetQuestionRatingQuestionsQueryHadler : IRequestHandler<GetQuestionRatingQuestionsQuery, IEnumerable<RatingQuestionDto>>
+    public class GetRatingQuestionToQuestionQueryHadler : IRequestHandler<GetRatingQuestionToQuestionQuery, IEnumerable<RatingQuestionDto>>
     {
         private readonly ICoreServiceDbContext _context;
         private readonly IRatingQuestionRepository _ratingQuestionRepository;
 
-        public GetQuestionRatingQuestionsQueryHadler(ICoreServiceDbContext context, IRatingQuestionRepository ratingQuestionRepository)
+        public GetRatingQuestionToQuestionQueryHadler(ICoreServiceDbContext context, IRatingQuestionRepository ratingQuestionRepository)
         {
             _context = context;
             _ratingQuestionRepository = ratingQuestionRepository;
         }
 
-        public async Task<IEnumerable<RatingQuestionDto>> Handle(GetQuestionRatingQuestionsQuery request, CancellationToken ct)
+        public async Task<IEnumerable<RatingQuestionDto>> Handle(GetRatingQuestionToQuestionQuery request, CancellationToken ct)
         {
 
-            var ratingQuestion = await _ratingQuestionRepository.GetAllToQuestionAsync(request.Id);
+            var ratingQuestion = await _ratingQuestionRepository.GetAllToQuestionAsync(request.qustionId);
             if (ratingQuestion == null)
-                throw new KeyNotFoundException($"Question with ID {request.Id} not found.");
+                throw new KeyNotFoundException($"Question with ID {request.qustionId} not found.");
 
             return ratingQuestion.Select(r => r.ToDto());
         }

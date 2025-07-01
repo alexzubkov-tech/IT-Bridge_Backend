@@ -24,7 +24,6 @@ namespace CoreService.Application.Questions.Mapper
                 UpdatedAt = DateTime.UtcNow
             };
 
-            // Добавляем категории
             foreach (var categoryId in dto.CategoryIds)
             {
                 question.QuestionCategories.Add(new QuestionCategory
@@ -35,7 +34,6 @@ namespace CoreService.Application.Questions.Mapper
                 });
             }
 
-            // Добавляем теги
             foreach (var tagId in dto.TagIds)
             {
                 question.QuestionTags.Add(new QuestionTag
@@ -55,6 +53,29 @@ namespace CoreService.Application.Questions.Mapper
             entity.Content = dto.Content;
             entity.IsUrgent = dto.IsUrgent;
             entity.UpdatedAt = DateTime.UtcNow;
+
+            entity.QuestionCategories.Clear();
+            entity.QuestionTags.Clear();
+
+            foreach (var categoryId in dto.CategoryIds)
+            {
+                entity.QuestionCategories.Add(new QuestionCategory
+                {
+                    CategoryId = categoryId,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                });
+            }
+
+            foreach (var tagId in dto.TagIds)
+            {
+                entity.QuestionTags.Add(new QuestionTag
+                {
+                    TagId = tagId,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                });
+            }
         }
 
         public static QuestionDto ToDto(this Question entity)
@@ -109,7 +130,7 @@ namespace CoreService.Application.Questions.Mapper
                         UserProfileId = a.UserProfile!.Id,
                     }).ToList(),
 
-                CommentQuestions = question.CommentQuestions
+                Comments = question.CommentQuestions
                     .Where(c => c.UserProfile != null)
                     .Select(c => new CommentQuestionDto
                     {
@@ -117,7 +138,7 @@ namespace CoreService.Application.Questions.Mapper
                         Content = c.Content,
                     }).ToList(),
 
-                RatingQuestions = question.RatingQuestions
+                Ratings = question.RatingQuestions
                     .Where(r => r.UserProfile != null)
                     .Select(r => new RatingQuestionDto
                     {

@@ -34,5 +34,13 @@ namespace CoreService.Application.RatingQuestions.Mapper
                 QuestionId = entity.QuestionId
             };
         }
+        public static RatingToQuestionDto ToQuestionRating(this IEnumerable<RatingQuestion> entity)
+        {
+            return new RatingToQuestionDto
+            {
+                RatingPositive = entity.Count(rn => rn.IsGoodAnswer),
+                RatingNegative = entity.Count(rn => !rn.IsGoodAnswer),
+            };
+        }
     }
 }

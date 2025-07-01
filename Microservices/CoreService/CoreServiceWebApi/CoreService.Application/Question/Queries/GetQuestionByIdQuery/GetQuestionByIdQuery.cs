@@ -3,5 +3,5 @@ using MediatR;
 
 namespace CoreService.Application.Questions.Queries.GetQuestionByIdQuery
 {
-    public record GetQuestionByIdQuery(int Id) : IRequest<QuestionDto>;
+    public record GetQuestionByIdQuery(int Id) : IRequest<QuestionDetailsDto>;
 }

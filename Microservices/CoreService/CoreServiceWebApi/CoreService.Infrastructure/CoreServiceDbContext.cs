@@ -34,11 +34,19 @@ namespace CoreService.Infrastructure
             modelBuilder.Entity<QuestionTag>()
                 .HasKey(qc => new { qc.QuestionId, qc.TagId });
 
-            modelBuilder.Entity<RatingAnswer>()
-                .HasKey(ra => new { ra.AnswerId, ra.UserProfileId });
 
+            modelBuilder.Entity<RatingAnswer>()
+                .HasKey(ra => ra.Id);
             modelBuilder.Entity<RatingQuestion>()
-                .HasKey(rq => new { rq.QuestionId, rq.UserProfileId });
+                .HasKey(rq => rq.Id);
+
+            modelBuilder.Entity<RatingAnswer>()
+                .HasIndex(ra => new { ra.AnswerId, ra.UserProfileId })
+                .IsUnique();
+            modelBuilder.Entity<RatingQuestion>()
+                .HasIndex(rq => new { rq.QuestionId, rq.UserProfileId })
+                .IsUnique();
+
 
             modelBuilder.Entity<User>()
                 .HasOne(u => u.UserProfile)

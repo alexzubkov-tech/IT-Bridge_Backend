@@ -18,6 +18,8 @@ namespace CoreService.Infrastructure.Repositories
             return await _context.Answers
                 .Include(a => a.UserProfile)
                 .Include(a => a.Question)
+                .Include(a=> a.RatingAnswers)
+                .Include(a => a.CommentAnswers)
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
 

@@ -4,9 +4,6 @@ using CoreService.Application.Questions.Commands.UpdateQuestionCommand;
 using CoreService.Application.Questions.Dtos;
 using CoreService.Application.Questions.Queries.GetAllQuestionsQuery;
 using CoreService.Application.Questions.Queries.GetQuestionByIdQuery;
-using CoreService.Application.Questions.Queries.GetQuestionCommentQuestionsQuery;
-using CoreService.Application.Questions.Queries.GetQuestionDetailsQuery;
-using CoreService.Application.Questions.Queries.GetQuestionRatingQuestionQuery;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,62 +40,6 @@ namespace CoreServiceWebApi.Controllers
             try
             {
                 var result = await _mediator.Send(new UpdateQuestionCommand(id, dto));
-                return Ok(result);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
-
-        [HttpGet("{id}/details")]
-        public async Task<IActionResult> GetDetails(int id)
-        {
-            try
-            {
-                var result = await _mediator.Send(new GetQuestionDetailsQuery(id));
-                return Ok(result);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
-
-        
-
-        [HttpGet("{id}/ratings")]
-        public async Task<IActionResult> GetRatingQuestion(int id)
-        {
-            try
-            {
-                var result = await _mediator.Send(new GetQuestionRatingQuestionsQuery(id));
-                return Ok(result);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
-
-        [HttpGet("{id}/comment")]
-        public async Task<IActionResult> GetCommentQuestion(int id)
-        {
-            try
-            {
-                var result = await _mediator.Send(new GetQuestionCommentQuestionsQuery(id));
                 return Ok(result);
             }
             catch (KeyNotFoundException ex)

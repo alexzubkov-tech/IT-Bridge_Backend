@@ -14,7 +14,7 @@ namespace CoreService.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Question?> GetByIdWithDetailsAsync(int id, CancellationToken ct)
+        public async Task<Question?> GetByIdAsync(int id, CancellationToken ct)
         {
             return await _context.Questions
                 .Include(q => q.UserProfile)
@@ -25,16 +25,6 @@ namespace CoreService.Infrastructure.Repositories
                     .ThenInclude(cq => cq.UserProfile)
                 .Include(q => q.RatingQuestions)
                     .ThenInclude(rq => rq.UserProfile)
-                .Include(q => q.QuestionTags)
-                    .ThenInclude(qt => qt.Tag)
-                .Include(q => q.QuestionCategories)
-                    .ThenInclude(qc => qc.Category)
-                .FirstOrDefaultAsync(q => q.Id == id, ct);
-        }
-
-        public async Task<Question?> GetByIdAsync(int id, CancellationToken ct)
-        {
-            return await _context.Questions
                 .Include(q => q.QuestionTags)
                     .ThenInclude(qt => qt.Tag)
                 .Include(q => q.QuestionCategories)

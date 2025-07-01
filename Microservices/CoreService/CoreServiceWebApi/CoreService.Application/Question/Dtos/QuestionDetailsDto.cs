@@ -17,12 +17,15 @@ namespace CoreService.Application.Questions.Dtos
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
+        public int RatingPositive { get; set; } = 0;
+        public int RatingNegative { get; set; } = 0;
+
         public int UserProfileId { get; set; }
         public UserProfileDto Author { get; set; }
 
         public List<AnswerDto> Answers { get; set; } = new();
-        public List<CommentQuestionDto> CommentQuestions { get; set; } = new();
-        public List<RatingQuestionDto> RatingQuestions { get; set; } = new();
+        public List<CommentQuestionDto> Comments { get; set; } = new();
+        public List<RatingQuestionDto> Ratings { get; set; } = new();
         public List<TagDto> Tags { get; set; } = new();
         public List<CategoryDto> Categories { get; set; } = new();
     }

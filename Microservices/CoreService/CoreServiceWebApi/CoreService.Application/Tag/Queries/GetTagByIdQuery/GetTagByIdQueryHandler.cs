@@ -5,7 +5,7 @@ using CoreService.Application.Tags.Mapper;
 
 namespace CoreService.Application.Tags.Queries.GetTagByIdQuery
 {
-    public class GetTagByIdQueryHandler : IRequestHandler<GetTagByIdQuery, TagDto>
+    public class GetTagByIdQueryHandler : IRequestHandler<GetTagByIdQuery, TagDetailsDto>
     {
         private readonly ITagRepository _tagRepository;
 
@@ -14,13 +14,13 @@ namespace CoreService.Application.Tags.Queries.GetTagByIdQuery
             _tagRepository = tagRepository;
         }
 
-        public async Task<TagDto> Handle(GetTagByIdQuery request, CancellationToken ct)
+        public async Task<TagDetailsDto> Handle(GetTagByIdQuery request, CancellationToken ct)
         {
             var tag = await _tagRepository.GetByIdWithQuestionsAsync(request.Id, ct);
             if (tag == null)
                 throw new KeyNotFoundException($"Tag with ID {request.Id} not found.");
 
-            return tag.ToDto();
+            return tag.ToDetailsDto();
         }
     }
 }

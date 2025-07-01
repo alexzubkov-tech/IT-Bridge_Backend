@@ -1,11 +1,9 @@
-﻿using CoreService.Application.Questions.Queries.GetQuestionDetailsQuery;
-using CoreService.Application.Tags.Commands.CreateTagCommand;
+﻿using CoreService.Application.Tags.Commands.CreateTagCommand;
 using CoreService.Application.Tags.Commands.DeleteTagCommand;
 using CoreService.Application.Tags.Commands.UpdateTagCommand;
 using CoreService.Application.Tags.Dtos;
 using CoreService.Application.Tags.Queries.GetAllTagsQuery;
 using CoreService.Application.Tags.Queries.GetTagByIdQuery;
-using CoreService.Application.Tags.Queries.GetTagDetailsQuery;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,24 +27,6 @@ namespace CoreServiceWebApi.Controllers
             {
                 var result = await _mediator.Send(new CreateTagCommand(dto));
                 return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
-
-        [HttpGet("{id}/details")]
-        public async Task<IActionResult> GetDetails(int id)
-        {
-            try
-            {
-                var result = await _mediator.Send(new GetTagDetailsQuery(id));
-                return Ok(result);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {

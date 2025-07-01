@@ -20,6 +20,15 @@ namespace CoreService.Infrastructure.Repositories
             return await _context.UserProfiles
                 .Include(up => up.Company)
                 .Include(up => up.Category)
+
+                .Include(up => up.Questions)
+                .Include(up => up.Answers)
+
+                .Include(up => up.CommentQuestions)
+                .Include(up => up.CommentAnswers)
+
+                .Include(up => up.RatingQuestions)
+                .Include(up => up.RatingAnswers)
                 .FirstOrDefaultAsync(up => up.Id == id);
         }
 
@@ -29,6 +38,7 @@ namespace CoreService.Infrastructure.Repositories
                 .Include(up => up.Company)
                 .Include(up => up.Category)
                 .FirstOrDefaultAsync(up => up.UserId == userId);
+
         }
 
         public async Task<IEnumerable<UserProfile>> GetAllAsync()

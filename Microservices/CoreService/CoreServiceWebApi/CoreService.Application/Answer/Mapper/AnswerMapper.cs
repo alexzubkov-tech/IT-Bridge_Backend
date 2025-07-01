@@ -1,5 +1,13 @@
-﻿using CoreService.Domain.Entities;
-using CoreService.Application.Answers.Dtos;
+﻿using CoreService.Application.Answers.Dtos;
+using CoreService.Application.Categories.Dtos;
+using CoreService.Application.CommentAnswers.Dtos;
+using CoreService.Application.CommentQuestions.Dtos;
+using CoreService.Application.Questions.Dtos;
+using CoreService.Application.RatingAnswers.Dtos;
+using CoreService.Application.RatingQuestions.Dtos;
+using CoreService.Application.Tags.Dtos;
+using CoreService.Application.UserProfiles.Mapper;
+using CoreService.Domain.Entities;
 
 namespace CoreService.Application.Answers.Mapper
 {
@@ -35,6 +43,34 @@ namespace CoreService.Application.Answers.Mapper
                 UpdatedAt = entity.UpdatedAt,
                 UserProfileId = entity.UserProfileId,
                 QuestionId = entity.QuestionId
+            };
+        }
+
+        public static AnswerDetailsDto ToDetailsDto(this Answer entity)
+        {
+            return new AnswerDetailsDto
+            {
+                Id = entity.Id,
+                Content = entity.Content,
+                CreatedAt = entity.CreatedAt,
+                UpdatedAt = entity.UpdatedAt,
+                UserProfileId = entity.UserProfileId,
+                QuestionId = entity.QuestionId,
+
+                Comments = entity.CommentAnswers
+                    .Select(c => new CommentAnswerDto
+                    {
+                        Id = c.Id,
+                        Content = c.Content,
+                    }).ToList(),
+
+                Ratings = entity.RatingAnswers
+                    .Select(r => new RatingAnswerDto
+                    {
+                        Id = r.Id,
+                        IsGoodAnswer = r.IsGoodAnswer,
+                    }).ToList(),
+
             };
         }
     }

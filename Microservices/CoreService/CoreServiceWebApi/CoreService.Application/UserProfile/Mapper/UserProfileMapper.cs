@@ -1,4 +1,13 @@
 ﻿
+using CoreService.Application.Answers.Dtos;
+using CoreService.Application.Categories.Mapper;
+using CoreService.Application.CommentAnswers.Dtos;
+using CoreService.Application.CommentQuestions.Dtos;
+using CoreService.Application.Companies.Mapper;
+using CoreService.Application.Questions.Dtos;
+using CoreService.Application.RatingAnswers.Dtos;
+using CoreService.Application.RatingQuestions.Dtos;
+using CoreService.Application.UserProfiles.Dtos;
 using CoreService.Application.UserProfiles.Dtos;
 using CoreService.Domain.Entities;
 
@@ -62,5 +71,77 @@ namespace CoreService.Application.UserProfiles.Mapper
                 UserId = entity.UserId
             };
         }
+
+        public static UserProfileDetaisDto ToDetailsDto(this UserProfile entity)
+        {
+            return new UserProfileDetaisDto
+            {
+                Id = entity.Id,
+                IsExpert = entity.IsExpert,
+                FIO = entity.FIO,
+                Bio = entity.Bio,
+                GithubUrl = entity.GithubUrl,
+                LinkedinUrl = entity.LinkedinUrl,
+                TelegramId = entity.TelegramId,
+                ResumeLink = entity.ResumeLink,
+                ExperienceYears = entity.ExperienceYears,
+                Position = entity.Position,
+
+                CompanyId = entity.CompanyId,
+                Company = entity.Company.ToDto(),
+
+                CategoryId = entity.CategoryId,
+                Category = entity.Category.ToDto(),
+
+                UserId = entity.UserId,
+
+                Answers = entity.Answers
+                    .Select(a => new AnswerDto
+                    {
+                        Id = a.Id,
+                        Content = a.Content,
+                    }).ToList(),
+
+                Questions = entity.Questions
+                    .Select(c => new QuestionDto
+                    {
+                        Id = c.Id,
+                        Title = c.Title,
+                        Content = c.Content,
+                        IsUrgent = c.IsUrgent
+                    }).ToList(),
+
+                CommentAnswers = entity.CommentAnswers
+                    .Select(r => new CommentAnswerDto
+                    {
+                        Id = r.Id,
+                        Content = r.Content,
+                    }).ToList(),
+
+                CommentQuestions = entity.CommentQuestions
+                    .Select(r => new CommentQuestionDto
+                    {
+                        Id = r.Id,
+                        Content = r.Content,
+                    }).ToList(),
+
+                RatingAnswers = entity.RatingAnswers
+                    .Select(r => new RatingAnswerDto
+                    {
+                        Id = r.Id,
+                        IsGoodAnswer = r.IsGoodAnswer,
+                    }).ToList(),
+
+                RatingQuestions = entity.RatingQuestions
+                    .Select(r => new RatingQuestionDto
+                    {
+                        Id = r.Id,
+                        IsGoodAnswer = r.IsGoodAnswer,
+                    }).ToList(),
+
+            };
+        }
+
+        
     }
 }

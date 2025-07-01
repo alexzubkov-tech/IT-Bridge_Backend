@@ -4,6 +4,8 @@ using CoreService.Application.CommentQuestions.Commands.UpdateCommentQuestionCom
 using CoreService.Application.CommentQuestions.Dtos;
 using CoreService.Application.CommentQuestions.Queries.GetAllCommentQuestionsQuery;
 using CoreService.Application.CommentQuestions.Queries.GetCommentQuestionByIdQuery;
+using CoreService.Application.CommentQuestions.Queries.GetQuestionCommentQuestionsQuery;
+using CoreService.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -81,6 +83,24 @@ namespace CoreServiceWebApi.Controllers
             {
                 var result = await _mediator.Send(new GetAllCommentQuestionsQuery());
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("question/{questionId}")]
+        public async Task<IActionResult> GetCommentQuestion(int questionId)
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetCommentQuestionsToQuestionQuery(questionId));
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
