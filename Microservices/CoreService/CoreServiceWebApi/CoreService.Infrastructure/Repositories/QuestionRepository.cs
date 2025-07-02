@@ -65,5 +65,14 @@ namespace CoreService.Infrastructure.Repositories
             var rowsAffected = await _context.SaveChangesAsync(ct);
             return rowsAffected > 0;
         }
+
+
+        public async Task<List<string>> GetSpecializationNamesByCategoryIds(List<int> categoryIds, CancellationToken ct)
+        {
+            return await _context.Categories
+                .Where(c => categoryIds.Contains(c.Id))
+                .Select(c => c.Name)
+                .ToListAsync(ct);
+        }
     }
 }
