@@ -1,7 +1,6 @@
-﻿using BuildingBlock.Events;
-using BuildingBlocks.EventBus.Abstractions;
-using NotificationService.EventHandlers;
-using Microsoft.Extensions.DependencyInjection;
+﻿using BuildingBlocks.EventBus.Abstractions;
+using BuildingBlocks.Events;
+using Notification;
 
 namespace NotificationService
 {
@@ -10,7 +9,8 @@ namespace NotificationService
         public static void SubscribeToEvents(IServiceProvider serviceProvider)
         {
             var eventBus = serviceProvider.GetRequiredService<IEventBus>();
-            eventBus.Subscribe<TestEvent, TestEventHandler>();
+            eventBus.Subscribe<QuestionCreatedNotificationEvent, QuestionCreatedEventHandler>();
+           // eventBus.Subscribe<UserProfileUpdatedEvent, UserProfileUpdatedEventHandler>();
         }
     }
 }

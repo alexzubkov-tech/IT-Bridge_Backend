@@ -1,6 +1,4 @@
-﻿
-
-using CoreService.Domain.Interfaces;
+﻿using CoreService.Domain.Interfaces;
 using CoreService.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,6 +44,14 @@ namespace CoreService.Infrastructure.Repositories
             return await _context.UserProfiles
                 .Include(up => up.Company)
                 .Include(up => up.Category)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<UserProfile>> GetByCategoryIdsAsync(IEnumerable<int> categoryIds)
+        {
+            return await _context.UserProfiles
+                .Include(u => u.Category)
+                .Where(u => categoryIds.Contains(u.CategoryId ?? 0))
                 .ToListAsync();
         }
 
