@@ -1,4 +1,5 @@
-﻿using CoreService.Application.UserProfiles.Commands.CreateUserProfileCommand;
+﻿using CoreService.Application.UserProfile.Commands.GenerateTelegramLinkCommand;
+using CoreService.Application.UserProfiles.Commands.CreateUserProfileCommand;
 using CoreService.Application.UserProfiles.Commands.DeleteUserProfileCommand;
 using CoreService.Application.UserProfiles.Commands.UpdateUserProfileCommand;
 using CoreService.Application.UserProfiles.Dtos;
@@ -106,5 +107,14 @@ namespace CoreServiceWebApi.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet("{id}/telegram-link")]
+        public async Task<IActionResult> GetTelegramLink(int id)
+        {
+            var command = new GenerateTelegramLinkCommand { UserProfileId = id };
+            var link = await _mediator.Send(command);
+            return Ok(new { TelegramLink = link });
+        }
+
     }
 }

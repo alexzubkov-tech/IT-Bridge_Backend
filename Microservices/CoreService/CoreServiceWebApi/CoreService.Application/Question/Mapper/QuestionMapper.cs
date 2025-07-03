@@ -5,7 +5,7 @@ using CoreService.Application.Questions.Dtos;
 using CoreService.Application.RatingQuestions.Dtos;
 using CoreService.Application.Tags.Dtos;
 using CoreService.Application.UserProfiles.Dtos;
-using CoreService.Application.UserProfiles.Mapper;
+using CoreService.Application.UserProfile.Mapper;
 using CoreService.Domain.Entities;
 
 namespace CoreService.Application.Questions.Mapper

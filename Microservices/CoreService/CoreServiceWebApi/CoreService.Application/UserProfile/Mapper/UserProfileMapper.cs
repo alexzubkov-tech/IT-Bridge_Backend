@@ -8,16 +8,15 @@ using CoreService.Application.Questions.Dtos;
 using CoreService.Application.RatingAnswers.Dtos;
 using CoreService.Application.RatingQuestions.Dtos;
 using CoreService.Application.UserProfiles.Dtos;
-using CoreService.Application.UserProfiles.Dtos;
 using CoreService.Domain.Entities;
 
-namespace CoreService.Application.UserProfiles.Mapper
+namespace CoreService.Application.UserProfile.Mapper
 {
     public static class UserProfileMapper
     {
-        public static UserProfile ToEntity(this CreateUserProfileDto dto, string userId)
+        public static CoreService.Domain.Entities.UserProfile ToEntity(this CreateUserProfileDto dto, string userId)
         {
-            return new UserProfile
+            return new CoreService.Domain.Entities.UserProfile
             {
                 IsExpert = dto.IsExpert,
                 FIO = dto.FIO,
@@ -36,7 +35,7 @@ namespace CoreService.Application.UserProfiles.Mapper
             };
         }
 
-        public static void UpdateEntityFromDto(this UserProfile entity, UpdateUserProfileDto dto)
+        public static void UpdateEntityFromDto(this CoreService.Domain.Entities.UserProfile entity, UpdateUserProfileDto dto)
         {
             entity.IsExpert = dto.IsExpert;
             entity.FIO = dto.FIO;
@@ -52,7 +51,7 @@ namespace CoreService.Application.UserProfiles.Mapper
             entity.UpdatedAt = DateTime.UtcNow;
         }
 
-        public static UserProfileDto ToDto(this UserProfile entity)
+        public static UserProfileDto ToDto(this CoreService.Domain.Entities.UserProfile entity)
         {
             return new UserProfileDto
             {
@@ -72,7 +71,7 @@ namespace CoreService.Application.UserProfiles.Mapper
             };
         }
 
-        public static UserProfileDetaisDto ToDetailsDto(this UserProfile entity)
+        public static UserProfileDetaisDto ToDetailsDto(this CoreService.Domain.Entities.UserProfile entity)
         {
             return new UserProfileDetaisDto
             {

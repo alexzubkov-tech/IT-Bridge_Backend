@@ -17,7 +17,7 @@ namespace CoreService.Application.Common.Interfaces
         public DbSet<RatingQuestion> RatingQuestions { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<CoreService.Domain.Entities.UserProfile> UserProfiles { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.EventBus.Abstractions;
+﻿using BuildingBlock.Events;
+using BuildingBlocks.EventBus.Abstractions;
 using BuildingBlocks.Events;
 using Notification;
 
@@ -10,7 +11,7 @@ namespace NotificationService
         {
             var eventBus = serviceProvider.GetRequiredService<IEventBus>();
             eventBus.Subscribe<QuestionCreatedNotificationEvent, QuestionCreatedEventHandler>();
-           // eventBus.Subscribe<UserProfileUpdatedEvent, UserProfileUpdatedEventHandler>();
+            eventBus.Subscribe<UserProfileUpdatedNotificationEvent, UserProfileUpdatedNotificationEventHandler>();
         }
     }
 }

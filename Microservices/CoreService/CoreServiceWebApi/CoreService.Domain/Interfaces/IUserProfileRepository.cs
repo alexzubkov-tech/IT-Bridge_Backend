@@ -12,5 +12,6 @@ namespace CoreService.Domain.Interfaces
             Task<int> CreateAsync(UserProfile profile);
             Task<bool> UpdateAsync(UserProfile profile);
             Task<bool> DeleteAsync(int id);
-        }
+            Task<string> GetCategoryNameByUserProfileIdAsync(int userProfileId);
+    }
 }

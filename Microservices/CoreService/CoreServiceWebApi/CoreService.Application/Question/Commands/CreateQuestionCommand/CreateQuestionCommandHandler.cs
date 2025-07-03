@@ -44,7 +44,7 @@ using BuildingBlocks.Events;
 using CoreService.Application.Questions.Dtos;
 using CoreService.Application.Questions.Mapper;
 using CoreService.Application.UserProfiles.Dtos;
-using CoreService.Application.UserProfiles.Mapper;
+using CoreService.Application.UserProfile.Mapper;
 using CoreService.Domain.Entities;
 using CoreService.Domain.Interfaces;
 using MediatR;

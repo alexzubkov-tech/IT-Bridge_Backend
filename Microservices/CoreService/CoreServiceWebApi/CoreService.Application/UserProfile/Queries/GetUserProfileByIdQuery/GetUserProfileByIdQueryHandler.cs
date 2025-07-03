@@ -1,6 +1,6 @@
 ﻿using CoreService.Application.RatingAnswers.Mapper;
 using CoreService.Application.UserProfiles.Dtos;
-using CoreService.Application.UserProfiles.Mapper;
+using CoreService.Application.UserProfile.Mapper;
 using CoreService.Domain.Interfaces;
 using MediatR;
 

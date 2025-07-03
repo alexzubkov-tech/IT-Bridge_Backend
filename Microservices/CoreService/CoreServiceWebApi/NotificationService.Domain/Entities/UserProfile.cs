@@ -8,16 +8,17 @@ namespace NotificationService.Domain.Entities
 {
     public class UserProfile
     {
-
-        public string UserId { get; set; }
-        public string TelegramId { get; set; }
-        public List<string> Categories { get; set; }
-
-        public UserProfile(string userId, string telegramId, List<string> categories)
+        public UserProfile(int userProfileId, long? chatId, string categoryName)
         {
-            UserId = userId;
-            TelegramId = telegramId;
-            Categories = categories;
+            UserProfileId = userProfileId;
+            ChatId = chatId;
+            CategoryName = categoryName;
         }
+
+        public int UserProfileId { get; set; } 
+        public long? ChatId { get; set; } 
+        public string CategoryName { get; set; } = string.Empty;
+ 
+
     }
 }

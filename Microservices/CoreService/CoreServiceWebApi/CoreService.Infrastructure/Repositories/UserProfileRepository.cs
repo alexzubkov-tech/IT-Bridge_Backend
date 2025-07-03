@@ -78,5 +78,14 @@ namespace CoreService.Infrastructure.Repositories
             var result = await _context.SaveChangesAsync() > 0;
             return result;
         }
+
+        public async Task<string> GetCategoryNameByUserProfileIdAsync(int userProfileId)
+        {
+            var profile = await _context.UserProfiles
+                .Include(up => up.Category)
+                .FirstOrDefaultAsync(up => up.Id == userProfileId);
+
+            return profile?.Category?.Name ?? string.Empty;
+        }
     }
 }
