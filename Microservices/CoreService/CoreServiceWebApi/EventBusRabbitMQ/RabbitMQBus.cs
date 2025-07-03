@@ -1,11 +1,10 @@
-﻿using System.Text;
-using BuildingBlocks.EventBus.Abstractions;
-using BuildingBlocks.EventBusRabbitMQ;
+﻿using BuildingBlocks.EventBus.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Text;
 
 namespace BuildingBlocks.EventBusRabbitMQ;
 

@@ -1,4 +1,6 @@
 ﻿using Application.Account.Commands;
+using BuildingBlocks.EventBus.Abstractions;
+using BuildingBlocks.EventBusRabbitMQ;
 using CoreService.Application.Common.Interfaces;
 using CoreService.Domain.Entities;
 using CoreService.Domain.Interfaces;
@@ -16,6 +18,19 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
+
+// 🔹 Регистрация RabbitMQ
+builder.Services.RegisterRabbit(configuration);
+
+// 🔹 ВАЖНО: Регистрируем сам IEventBus
+builder.Services.AddSingleton<IEventBus, RabbitMQBus>();
+
+// 🔹 Регистрируем паблишер событий
+builder.Services.AddSingleton<IEventBusPublisher, RabbitMQBusPublisher>(provider =>
+{
+    var eventBus = (RabbitMQBus)provider.GetRequiredService<IEventBus>();
+    return eventBus.CreatePublisher();
+});
 
 // Добавляем контроллеры
 builder.Services.AddControllers();
