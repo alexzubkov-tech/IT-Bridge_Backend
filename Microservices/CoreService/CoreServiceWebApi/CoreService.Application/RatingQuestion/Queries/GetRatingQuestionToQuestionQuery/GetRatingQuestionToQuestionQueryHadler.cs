@@ -14,12 +14,10 @@ namespace CoreService.Application.RatingQuestions.Queries.GetQuestionRatingQuest
 {
     public class GetRatingQuestionToQuestionQueryHadler : IRequestHandler<GetRatingQuestionToQuestionQuery, IEnumerable<RatingQuestionDto>>
     {
-        private readonly ICoreServiceDbContext _context;
         private readonly IRatingQuestionRepository _ratingQuestionRepository;
 
         public GetRatingQuestionToQuestionQueryHadler(ICoreServiceDbContext context, IRatingQuestionRepository ratingQuestionRepository)
         {
-            _context = context;
             _ratingQuestionRepository = ratingQuestionRepository;
         }
 

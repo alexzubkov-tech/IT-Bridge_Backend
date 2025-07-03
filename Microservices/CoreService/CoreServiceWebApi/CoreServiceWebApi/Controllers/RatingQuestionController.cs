@@ -4,6 +4,7 @@ using CoreService.Application.RatingQuestions.Commands.UpdateRatingQuestionComma
 using CoreService.Application.RatingQuestions.Dtos;
 using CoreService.Application.RatingQuestions.Queries.GetAllRatingQuestionsQuery;
 using CoreService.Application.RatingQuestions.Queries.GetQuestionRatingQuestionsQuery;
+using CoreService.Application.RatingQuestions.Queries.GetRatingByQuestion;
 using CoreService.Application.RatingQuestions.Queries.GetRatingQuestionByIdQuery;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -82,6 +83,20 @@ namespace CoreServiceWebApi.Controllers
             {
                 var profiles = await _mediator.Send(new GetAllRatingQuestionsQuery());
                 return Ok(profiles);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("rating-by-question")]
+        public async Task<IActionResult> GetRatingByQuestion(CancellationToken ct)
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetRatingByQuestionQuery(), ct);
+                return Ok(result);
             }
             catch (Exception ex)
             {

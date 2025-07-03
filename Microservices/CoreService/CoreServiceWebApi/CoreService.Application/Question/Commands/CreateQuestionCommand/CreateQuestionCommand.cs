@@ -3,5 +3,5 @@ using MediatR;
 
 namespace CoreService.Application.Questions.Commands.CreateQuestionCommand
 {
-    public record CreateQuestionCommand(CreateQuestionDto Dto, int UserProfileId) : IRequest<QuestionDto>;
+    public record CreateQuestionCommand(CreateQuestionDto Dto, int UserProfileId) : IRequest<QuestionDetailsDto>;
 }

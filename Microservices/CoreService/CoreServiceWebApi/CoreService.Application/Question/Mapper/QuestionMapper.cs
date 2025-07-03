@@ -100,6 +100,7 @@ namespace CoreService.Application.Questions.Mapper
 
                 Categories = entity.QuestionCategories
                 .Where(qc => qc.Question != null)
+                .Where(qc => qc.Category != null)
                 .Select(qc => new CategoryDto
                 {
                     Id = qc.Category.Id,

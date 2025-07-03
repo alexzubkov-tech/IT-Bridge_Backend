@@ -1,7 +1,4 @@
-﻿using BuildingBlocks.EventBus.Abstractions;
-using BuildingBlocks.Events;
-using BuildingBlocks.EventBusRabbitMQ;
-using CoreService.Application.Questions.Dtos;
+﻿using CoreService.Application.Questions.Dtos;
 using CoreService.Application.Questions.Mapper;
 using CoreService.Domain.Entities;
 using CoreService.Domain.Interfaces;
@@ -9,39 +6,27 @@ using MediatR;
 
 namespace CoreService.Application.Questions.Commands.CreateQuestionCommand
 {
-    public class CreateQuestionCommandHandler : IRequestHandler<CreateQuestionCommand, QuestionDto>
+    public class CreateQuestionCommandHandler : IRequestHandler<CreateQuestionCommand, QuestionDetailsDto>
     {
         private readonly IQuestionRepository _questionRepository;
-        private readonly IEventBusPublisher _eventBuspublisher;
 
 
-        public CreateQuestionCommandHandler(
-            IQuestionRepository questionRepository,
-            IEventBusPublisher eventBusPublisher)
+        public CreateQuestionCommandHandler(IQuestionRepository questionRepository)
         {
             _questionRepository = questionRepository;
-            _eventBuspublisher = eventBusPublisher;
         }
 
-        public async Task<QuestionDto> Handle(CreateQuestionCommand request, CancellationToken ct)
+        public async Task<QuestionDetailsDto> Handle(CreateQuestionCommand request, CancellationToken ct)
         {
-            // 1. Преобразуем DTO в сущность с UserProfileId
             var entity = request.Dto.ToEntity(request.UserProfileId);
-
-            // 2. Сохраняем вопрос
-            await _questionRepository.CreateAsync(entity, ct);
-
-            // 3. Получаем названия специализаций (категорий)
-            var specializationNames = await _questionRepository
-                .GetSpecializationNamesByCategoryIds(request.Dto.CategoryIds, ct);
+            var questionId = await _questionRepository.CreateAsync(entity, ct);
 
 
-            // 5. Публикуем в RabbitMQ
-            _eventBuspublisher.Publish(new QuestionCreatedNotificationEvent(entity.Title, specializationNames));
+            var question = await _questionRepository.GetByIdAsync(questionId, ct);
+            if (question == null)
+                throw new KeyNotFoundException($"Question with ID {questionId} not found.");
 
-
-            // 6. Возвращаем результат
-            return entity.ToDto();
+            return question.ToDetailsDto();
         }
     }
 }
