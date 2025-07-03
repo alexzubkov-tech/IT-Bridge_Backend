@@ -70,12 +70,12 @@ namespace CoreServiceWebApi.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpGet()]
+        public async Task<IActionResult> GetAll([FromQuery] string? title = null)
         {
             try
             {
-                var result = await _mediator.Send(new GetAllQuestionsQuery());
+                var result = await _mediator.Send(new GetAllQuestionsQuery(title));
                 return Ok(result);
             }
             catch (Exception ex)

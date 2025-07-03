@@ -29,6 +29,20 @@ namespace CoreService.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<RatingQuestion>> GetAllWithDetailsAsync()
+        {
+            return await _context.RatingQuestions
+                .Include(r => r.Question)
+                    .ThenInclude(q => q.UserProfile)
+                .Include(r => r.Question)
+                    .ThenInclude(q => q.QuestionTags)
+                        .ThenInclude(qt => qt.Tag)
+                .Include(r => r.Question)
+                    .ThenInclude(q => q.QuestionCategories)
+                        .ThenInclude(qc => qc.Category)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<RatingQuestion>> GetAllToQuestionAsync(int id)
         {
             return await _context.RatingQuestions

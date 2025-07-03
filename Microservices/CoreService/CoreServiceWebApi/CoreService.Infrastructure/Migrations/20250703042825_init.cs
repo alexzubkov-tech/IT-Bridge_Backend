@@ -76,7 +76,7 @@ namespace CoreService.Infrastructure.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     TaxID = table.Column<string>(type: "text", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: false),
-                    FoundationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    FoundationDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EmployeeCount = table.Column<int>(type: "integer", nullable: false),
                     Industry = table.Column<int>(type: "integer", nullable: false),
                     PhoneNumber = table.Column<string>(type: "text", nullable: false),
@@ -389,16 +389,17 @@ namespace CoreService.Infrastructure.Migrations
                 name: "RatingQuestions",
                 columns: table => new
                 {
-                    UserProfileId = table.Column<int>(type: "integer", nullable: false),
-                    QuestionId = table.Column<int>(type: "integer", nullable: false),
-                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     IsGoodAnswer = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UserProfileId = table.Column<int>(type: "integer", nullable: false),
+                    QuestionId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RatingQuestions", x => new { x.QuestionId, x.UserProfileId });
+                    table.PrimaryKey("PK_RatingQuestions", x => x.Id);
                     table.ForeignKey(
                         name: "FK_RatingQuestions_Questions_QuestionId",
                         column: x => x.QuestionId,
@@ -446,16 +447,17 @@ namespace CoreService.Infrastructure.Migrations
                 name: "RatingAnswers",
                 columns: table => new
                 {
-                    UserProfileId = table.Column<int>(type: "integer", nullable: false),
-                    AnswerId = table.Column<int>(type: "integer", nullable: false),
-                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     IsGoodAnswer = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UserProfileId = table.Column<int>(type: "integer", nullable: false),
+                    AnswerId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RatingAnswers", x => new { x.AnswerId, x.UserProfileId });
+                    table.PrimaryKey("PK_RatingAnswers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_RatingAnswers_Answers_AnswerId",
                         column: x => x.AnswerId,
@@ -553,9 +555,21 @@ namespace CoreService.Infrastructure.Migrations
                 column: "TagId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RatingAnswers_AnswerId_UserProfileId",
+                table: "RatingAnswers",
+                columns: new[] { "AnswerId", "UserProfileId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RatingAnswers_UserProfileId",
                 table: "RatingAnswers",
                 column: "UserProfileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RatingQuestions_QuestionId_UserProfileId",
+                table: "RatingQuestions",
+                columns: new[] { "QuestionId", "UserProfileId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RatingQuestions_UserProfileId",

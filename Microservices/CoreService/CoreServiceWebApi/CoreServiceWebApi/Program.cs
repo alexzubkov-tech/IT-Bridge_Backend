@@ -130,20 +130,20 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var serviceProvider = scope.ServiceProvider;
-//    try
-//    {
-//        var dbContext = serviceProvider.GetRequiredService<CoreServiceDbContext>();
-//        await dbContext.Database.MigrateAsync();
-//        await DataSeeder.SeedAsync(serviceProvider);
-//    }
-//    catch (Exception ex)
-//    {
-//        var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
-//        logger.LogError(ex, "Ошибка при миграции и сидинге БД.");
-//    }
-//}
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    try
+    {
+        var dbContext = serviceProvider.GetRequiredService<CoreServiceDbContext>();
+        await dbContext.Database.MigrateAsync();
+        await DataSeeder.SeedAsync(serviceProvider);
+    }
+    catch (Exception ex)
+    {
+        var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ошибка при миграции и сидинге БД.");
+    }
+}
 
 app.Run();

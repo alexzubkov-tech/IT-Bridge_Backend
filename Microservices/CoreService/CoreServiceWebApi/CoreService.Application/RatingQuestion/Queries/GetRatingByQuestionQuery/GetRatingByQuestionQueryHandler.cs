@@ -1,4 +1,5 @@
-﻿using CoreService.Application.RatingQuestions.Dtos;
+﻿using CoreService.Application.Questions.Mapper;
+using CoreService.Application.RatingQuestions.Dtos;
 using CoreService.Domain.Interfaces;
 using MediatR;
 
@@ -15,7 +16,7 @@ namespace CoreService.Application.RatingQuestions.Queries.GetRatingByQuestion
 
         public async Task<IEnumerable<RatingByQuestionDto>> Handle(GetRatingByQuestionQuery request, CancellationToken ct)
         {
-            var ratings = await _ratingQuestionRepository.GetAllAsync();
+            var ratings = await _ratingQuestionRepository.GetAllWithDetailsAsync();
 
             var grouped = ratings
                 .GroupBy(r => r.QuestionId)
@@ -23,7 +24,8 @@ namespace CoreService.Application.RatingQuestions.Queries.GetRatingByQuestion
                 {
                     QuestionId = g.Key,
                     RatingPositive = g.Count(r => r.IsGoodAnswer),
-                    RatingNegative = g.Count(r => !r.IsGoodAnswer)
+                    RatingNegative = g.Count(r => !r.IsGoodAnswer),
+                    Question = g.First().Question.ToDetailsDto(),
                 })
                 .ToList();
 

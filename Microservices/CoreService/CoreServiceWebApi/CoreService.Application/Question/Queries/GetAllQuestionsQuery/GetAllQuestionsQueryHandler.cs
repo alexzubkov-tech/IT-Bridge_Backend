@@ -16,7 +16,7 @@ namespace CoreService.Application.Questions.Queries.GetAllQuestionsQuery
 
         public async Task<IEnumerable<QuestionDto>> Handle(GetAllQuestionsQuery request, CancellationToken ct)
         {
-            var questions = await _questionRepository.GetAllAsync(ct);
+            var questions = await _questionRepository.GetAllAsync(request.Title?.Trim(), ct);
             return questions.Select(q => q.ToDto());
         }
     }

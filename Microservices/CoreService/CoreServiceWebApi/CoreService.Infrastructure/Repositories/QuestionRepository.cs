@@ -32,14 +32,18 @@ namespace CoreService.Infrastructure.Repositories
                 .FirstOrDefaultAsync(q => q.Id == id, ct);
         }
 
-        public async Task<IEnumerable<Question>> GetAllAsync(CancellationToken ct)
+        public async Task<IEnumerable<Question>> GetAllAsync(string? title, CancellationToken ct)
         {
-            return await _context.Questions
-                .Include(q => q.QuestionTags)
-                    .ThenInclude(qt => qt.Tag)
-                .Include(q => q.QuestionCategories)
-                    .ThenInclude(qc => qc.Category)
-                .ToListAsync(ct);
+            IQueryable<Question> query = _context.Questions
+                .Include(q => q.QuestionTags).ThenInclude(qt => qt.Tag)
+                .Include(q => q.QuestionCategories).ThenInclude(qc => qc.Category);
+
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                query = query.Where(q => EF.Functions.ILike(q.Title, $"%{title}%"));
+            }
+
+            return await query.ToListAsync(ct);
         }
 
         public async Task<int> CreateAsync(Question question, CancellationToken ct)

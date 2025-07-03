@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CoreService.Infrastructure.Migrations
 {
     [DbContext(typeof(CoreServiceDbContext))]
-    [Migration("20250630120040_init")]
+    [Migration("20250703042825_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -169,8 +169,8 @@ namespace CoreService.Infrastructure.Migrations
                     b.Property<int>("EmployeeCount")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("FoundationDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("FoundationDate")
+                        .HasColumnType("date");
 
                     b.Property<int>("Industry")
                         .HasColumnType("integer");
@@ -274,17 +274,17 @@ namespace CoreService.Infrastructure.Migrations
 
             modelBuilder.Entity("CoreService.Domain.Entities.RatingAnswer", b =>
                 {
-                    b.Property<int>("AnswerId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    b.Property<int>("UserProfileId")
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AnswerId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
 
                     b.Property<bool>("IsGoodAnswer")
                         .HasColumnType("boolean");
@@ -292,36 +292,48 @@ namespace CoreService.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("AnswerId", "UserProfileId");
+                    b.Property<int>("UserProfileId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("UserProfileId");
+
+                    b.HasIndex("AnswerId", "UserProfileId")
+                        .IsUnique();
 
                     b.ToTable("RatingAnswers");
                 });
 
             modelBuilder.Entity("CoreService.Domain.Entities.RatingQuestion", b =>
                 {
-                    b.Property<int>("QuestionId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    b.Property<int>("UserProfileId")
-                        .HasColumnType("integer");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
-
                     b.Property<bool>("IsGoodAnswer")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("QuestionId", "UserProfileId");
+                    b.Property<int>("UserProfileId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("UserProfileId");
+
+                    b.HasIndex("QuestionId", "UserProfileId")
+                        .IsUnique();
 
                     b.ToTable("RatingQuestions");
                 });

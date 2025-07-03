@@ -3,5 +3,5 @@ using MediatR;
 
 namespace CoreService.Application.Questions.Queries.GetAllQuestionsQuery
 {
-    public record GetAllQuestionsQuery() : IRequest<IEnumerable<QuestionDto>>;
+    public record GetAllQuestionsQuery(string? Title = null) : IRequest<IEnumerable<QuestionDto>>;
 }

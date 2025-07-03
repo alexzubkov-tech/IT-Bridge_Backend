@@ -1,6 +1,4 @@
 ﻿using CoreService.Domain.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CoreService.Domain.Interfaces
 {
@@ -8,6 +6,7 @@ namespace CoreService.Domain.Interfaces
     {
         Task<RatingQuestion> GetByIdAsync(int id);
         Task<IEnumerable<RatingQuestion>> GetAllAsync();
+        Task<IEnumerable<RatingQuestion>> GetAllWithDetailsAsync();
         Task<IEnumerable<RatingQuestion>> GetAllToQuestionAsync(int id);
         Task<IEnumerable<RatingQuestion>> GetAllRatingQuestionToQuestionAsync(int id);
         Task<int> CreateAsync(RatingQuestion rating);
