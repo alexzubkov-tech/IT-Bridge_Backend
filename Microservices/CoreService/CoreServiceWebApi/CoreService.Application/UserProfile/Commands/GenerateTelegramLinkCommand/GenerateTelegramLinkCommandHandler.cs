@@ -20,7 +20,7 @@ namespace CoreService.Application.UserProfile.Commands.GenerateTelegramLinkComma
             if (!profile.IsExpert)
                 throw new InvalidOperationException("User is not an expert");
 
-            string botUsername = "NotificationAnimalCreate_bot"; // Замени на имя бота или возьми из конфигурации
+            string botUsername = "ItMostNotification_bot."; // Замени на имя бота или возьми из конфигурации
             return $"t.me/{botUsername}?start={profile.Id}";
         }
     }
