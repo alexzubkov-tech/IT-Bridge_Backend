@@ -27,7 +27,13 @@ namespace NotificationBotApp.Application.EventHandlers
                 return;
             }
 
-            string message = $"🔔 Создан новый вопрос:\n{@event.Title}";
+            string message =
+                "<b>🎉 Новый вопрос!</b>\n" +
+                $"👉 <i>Заголовок:</i> '{@event.Title}'\n\n" +
+                $"🤔 <i>Хотите помочь?</i>\n" +
+                $"🔗 Ссылка на вопрос 👇:\n" +
+                $"<b><a href=\"{@event.Link}\">{@event.Link}</a></b>\n\n" +
+                $"🌟 <b>Станьте героем дня!</b>";
 
             var chatIds = await _mediator.Send(new GetUsersByCategoriesQuery(@event.CategoryIds));
 

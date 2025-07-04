@@ -43,11 +43,12 @@ using BuildingBlocks.EventBus.Abstractions;
 using BuildingBlocks.Events;
 using CoreService.Application.Questions.Dtos;
 using CoreService.Application.Questions.Mapper;
-using CoreService.Application.UserProfiles.Dtos;
 using CoreService.Application.UserProfile.Mapper;
+using CoreService.Application.UserProfiles.Dtos;
 using CoreService.Domain.Entities;
 using CoreService.Domain.Interfaces;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 
 // CreateQuestionCommandHandler.cs
 
@@ -58,15 +59,18 @@ namespace CoreService.Application.Questions.Commands.CreateQuestionCommand
         private readonly IQuestionRepository _questionRepository;
         private readonly IUserProfileRepository _userProfileRepository;
         private readonly IEventBusPublisher _eventBuspublisher;
+        private readonly IConfiguration _configuration;
 
         public CreateQuestionCommandHandler(
             IQuestionRepository questionRepository,
             IUserProfileRepository userProfileRepository,
-            IEventBusPublisher eventBusPublisher)
+            IEventBusPublisher eventBusPublisher,
+            IConfiguration configuration)
         {
             _questionRepository = questionRepository;
             _userProfileRepository = userProfileRepository;
             _eventBuspublisher = eventBusPublisher;
+            _configuration = configuration;
         }
 
         public async Task<QuestionDetailsDto> Handle(CreateQuestionCommand request, CancellationToken ct)
@@ -82,10 +86,14 @@ namespace CoreService.Application.Questions.Commands.CreateQuestionCommand
             // Получаем CategoryIds напрямую из DTO
             var categoryIds = request.Dto.CategoryIds;
 
+            string backendApiUrl = _configuration["AppSettings:BackendApiUrl"];
+            string link = $"{backendApiUrl}/api/questions/{question.Id}";
+
             // Публикация события с массивом CategoryIds
             _eventBuspublisher.Publish(new QuestionCreatedNotificationEvent(
                 question.Id,
                 question.Title,
+                link,
                 categoryIds));
 
             // Получение пользователей по категориям (опционально, если нужно для других целей)
