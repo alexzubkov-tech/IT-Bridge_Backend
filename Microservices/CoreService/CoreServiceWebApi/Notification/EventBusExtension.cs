@@ -2,6 +2,7 @@
 using BuildingBlocks.EventBus.Abstractions;
 using BuildingBlocks.Events;
 using Notification;
+using NotificationBotApp.Application.EventHandlers;
 
 namespace NotificationService
 {

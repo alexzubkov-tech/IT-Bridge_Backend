@@ -1,8 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NotificationBotApp.Application.Commands;
-using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
@@ -56,7 +54,6 @@ public class BotBackgroundService : BackgroundService
             var parts = messageText.Split(' ');
             if (parts.Length > 1)
             {
-                // Парсим "123_456"
                 var payload = parts[1].Split('_');
                 if (payload.Length == 2 &&
                     int.TryParse(payload[0], out int userProfileId) &&
@@ -73,11 +70,11 @@ public class BotBackgroundService : BackgroundService
                         CategoryId = categoryId
                     };
 
-                    await mediator.Send(command, ct);
+                    var result = await mediator.Send(command, ct);
 
                     await botClient.SendTextMessageAsync(
                         chatId: message.Chat.Id,
-                        text: $"✅ Привязано к профилю ID={userProfileId}, категория {categoryId}",
+                        text: result.Message,
                         cancellationToken: ct);
                 }
             }

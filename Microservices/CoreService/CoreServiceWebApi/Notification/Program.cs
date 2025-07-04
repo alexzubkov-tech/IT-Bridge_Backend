@@ -4,8 +4,9 @@ using BuildingBlocks.EventBusRabbitMQ;
 using BuildingBlocks.Events;
 using Microsoft.EntityFrameworkCore;
 using Notification;
-using NotificationBotApp.Application.Commands;
+using NotificationBotApp.Application.EventHandlers;
 using NotificationBotApp.Infrastructure;
+using NotificationBotApp.Infrastructure.Bot;
 using NotificationBotApp.Infrastructure.Repositories;
 using NotificationService;
 using NotificationService.Application.ChatBindin.Mapper;
@@ -47,6 +48,10 @@ builder.Services.AddMediatR(cfg =>
 
 // Репозитории
 builder.Services.AddScoped<IUserChatBindingRepository, UserChatBindingRepository>();
+
+builder.Services.AddScoped<INotifyService, NotifyService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<NotifyService>();
 
 // Фоновый бот
 builder.Services.AddHostedService<BotBackgroundService>();

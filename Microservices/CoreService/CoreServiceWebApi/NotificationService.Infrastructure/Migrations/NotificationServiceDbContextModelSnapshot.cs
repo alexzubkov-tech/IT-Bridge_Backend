@@ -43,6 +43,9 @@ namespace NotificationService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserProfileId")
+                        .IsUnique();
+
                     b.ToTable("UserChatBindings");
                 });
 #pragma warning restore 612, 618

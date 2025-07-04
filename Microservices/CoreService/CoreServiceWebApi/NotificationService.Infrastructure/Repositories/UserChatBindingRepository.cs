@@ -23,4 +23,19 @@ public class UserChatBindingRepository : IUserChatBindingRepository
         return await _context.UserChatBindings
             .FirstOrDefaultAsync(b => b.UserProfileId == userProfileId);
     }
+
+    public async Task<bool> ExistsByUserProfileId(int userProfileId, CancellationToken ct)
+    {
+        return await _context.UserChatBindings
+            .AnyAsync(b => b.UserProfileId == userProfileId, ct);
+    }
+
+    public async Task<List<long>> GetChatIdsByCategoryIds(List<int> categoryIds, CancellationToken ct)
+    {
+        return await _context.UserChatBindings
+            .Where(b => categoryIds.Contains(b.CategoryId))
+            .Select(b => b.ChatId)
+            .Distinct()
+            .ToListAsync(ct);
+    }
 }

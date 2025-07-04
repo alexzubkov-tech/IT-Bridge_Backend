@@ -4,17 +4,17 @@ namespace BuildingBlocks.Events
 {
     public class QuestionCreatedNotificationEvent : IEvent
     {
-       
-        public QuestionCreatedNotificationEvent(int questionId, string title, List<string> specializationNames)
+
+        public int QuestionId { get; }
+        public string Title { get; }
+        public List<int> CategoryIds { get; }
+
+        public QuestionCreatedNotificationEvent(int questionId, string title, List<int> categoryIds)
         {
             QuestionId = questionId;
             Title = title;
-            SpecializationNames = specializationNames;
+            CategoryIds = categoryIds;
         }
-
-        public int QuestionId { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public List<string> SpecializationNames { get; set; } = new();
     }
 
 }

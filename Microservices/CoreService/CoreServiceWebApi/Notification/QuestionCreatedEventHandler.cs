@@ -1,33 +1,43 @@
-﻿using BuildingBlock.Events;
+﻿// NotificationBotApp.Application.EventHandlers.QuestionCreatedEventHandler.cs
+
 using BuildingBlocks.EventBus.Abstractions;
 using BuildingBlocks.Events;
-using NotificationService.Application.Interfaces.Repositories;
-using NotificationService.Domain.Entities;
+using MediatR;
+using NotificationBotApp.Application.Queries;
+using NotificationBotApp.Infrastructure.Bot;
 
-namespace Notification
+namespace NotificationBotApp.Application.EventHandlers
 {
     public class QuestionCreatedEventHandler : IEventHandler<QuestionCreatedNotificationEvent>
     {
-        private readonly IQuestionRepository _questionRepository;
+        private readonly INotifyService _notifyService;
+        private readonly IMediator _mediator;
 
-        public QuestionCreatedEventHandler(IQuestionRepository questionRepository)
+        public QuestionCreatedEventHandler(INotifyService notifyService, IMediator mediator)
         {
-            _questionRepository = questionRepository;
+            _notifyService = notifyService;
+            _mediator = mediator;
         }
 
         public async Task Handle(QuestionCreatedNotificationEvent @event)
         {
+            if (@event.CategoryIds == null || !@event.CategoryIds.Any())
+            {
+                Console.WriteLine("Нет категорий для рассылки.");
+                return;
+            }
 
-            // Создание сущности Question
-            var question = new Question(
-                id: @event.QuestionId.ToString(),
-                title: @event.Title,
-                specializationNames: @event.SpecializationNames
-            );
+            string message = $"🔔 Создан новый вопрос:\n{@event.Title}";
 
-            // Сохранение вопроса в хранилище
-            await _questionRepository.AddAsync(question);
+            var chatIds = await _mediator.Send(new GetUsersByCategoriesQuery(@event.CategoryIds));
 
+            if (!chatIds.Any())
+            {
+                Console.WriteLine("Нет пользователей для рассылки.");
+                return;
+            }
+
+            await _notifyService.NotifyChatsAsync(chatIds, message);
         }
     }
 }

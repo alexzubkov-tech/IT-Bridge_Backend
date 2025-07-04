@@ -49,6 +49,8 @@ using CoreService.Domain.Entities;
 using CoreService.Domain.Interfaces;
 using MediatR;
 
+// CreateQuestionCommandHandler.cs
+
 namespace CoreService.Application.Questions.Commands.CreateQuestionCommand
 {
     public class CreateQuestionCommandHandler : IRequestHandler<CreateQuestionCommand, QuestionDetailsDto>
@@ -57,7 +59,10 @@ namespace CoreService.Application.Questions.Commands.CreateQuestionCommand
         private readonly IUserProfileRepository _userProfileRepository;
         private readonly IEventBusPublisher _eventBuspublisher;
 
-        public CreateQuestionCommandHandler(IQuestionRepository questionRepository, IUserProfileRepository userProfileRepository, IEventBusPublisher eventBusPublisher)
+        public CreateQuestionCommandHandler(
+            IQuestionRepository questionRepository,
+            IUserProfileRepository userProfileRepository,
+            IEventBusPublisher eventBusPublisher)
         {
             _questionRepository = questionRepository;
             _userProfileRepository = userProfileRepository;
@@ -74,14 +79,14 @@ namespace CoreService.Application.Questions.Commands.CreateQuestionCommand
             var question = await _questionRepository.GetByIdAsync(questionId, ct)
                 ?? throw new KeyNotFoundException($"Question with ID {questionId} not found.");
 
-            // Получение списка ID категорий вопроса
-            var categoryIds = question.QuestionCategories.Select(q => q.CategoryId).ToList();
+            // Получаем CategoryIds напрямую из DTO
+            var categoryIds = request.Dto.CategoryIds;
 
-            // Получение названий категорий
-            var specializationNames = await _questionRepository.GetSpecializationNamesByCategoryIds(categoryIds, ct);
-
-            // Публикация события
-            _eventBuspublisher.Publish(new QuestionCreatedNotificationEvent(question.Id, question.Title, specializationNames));
+            // Публикация события с массивом CategoryIds
+            _eventBuspublisher.Publish(new QuestionCreatedNotificationEvent(
+                question.Id,
+                question.Title,
+                categoryIds));
 
             // Получение пользователей по категориям (опционально, если нужно для других целей)
             IEnumerable<UserProfileDto> usersDto = categoryIds.Any()

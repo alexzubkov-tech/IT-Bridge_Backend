@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NotificationService.Infrastructure.Migrations
 {
     [DbContext(typeof(NotificationServiceDbContext))]
-    [Migration("20250704040346_init")]
+    [Migration("20250704041816_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -45,6 +45,9 @@ namespace NotificationService.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserProfileId")
+                        .IsUnique();
 
                     b.ToTable("UserChatBindings");
                 });

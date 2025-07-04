@@ -26,6 +26,12 @@ namespace NotificationService.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_UserChatBindings", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserChatBindings_UserProfileId",
+                table: "UserChatBindings",
+                column: "UserProfileId",
+                unique: true);
         }
 
         /// <inheritdoc />

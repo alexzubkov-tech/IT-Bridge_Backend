@@ -16,6 +16,9 @@ namespace NotificationService.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<UserChatBinding>()
+                .HasIndex(x => x.UserProfileId)
+                .IsUnique();
         }
 
     }
