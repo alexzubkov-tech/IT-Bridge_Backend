@@ -17,7 +17,8 @@ public class BindTelegramChatCommandHandler : IRequestHandler<BindTelegramChatCo
         {
             ChatId = request.ChatId,
             Username = request.Username,
-            UserProfileId = request.UserProfileId
+            UserProfileId = request.UserProfileId,
+            CategoryId = request.CategoryId,
         };
 
         await _repository.AddAsync(binding);

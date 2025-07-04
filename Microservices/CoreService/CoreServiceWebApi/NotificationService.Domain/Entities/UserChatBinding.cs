@@ -6,5 +6,6 @@ public class UserChatBinding
     public long ChatId { get; set; }
     public string? Username { get; set; }
     public int UserProfileId { get; set; }
+    public int CategoryId { get; set; }
     public DateTime CreatedAt { get; } = DateTime.UtcNow;
 }

@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NotificationService.Infrastructure.Migrations
 {
     [DbContext(typeof(NotificationServiceDbContext))]
-    [Migration("20250704031810_init")]
+    [Migration("20250704040346_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -31,6 +31,9 @@ namespace NotificationService.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
 
                     b.Property<long>("ChatId")
                         .HasColumnType("bigint");

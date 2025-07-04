@@ -54,28 +54,35 @@ public class BotBackgroundService : BackgroundService
         if (messageText.StartsWith("/start"))
         {
             var parts = messageText.Split(' ');
-            if (parts.Length > 1 && int.TryParse(parts[1], out int userProfileId))
+            if (parts.Length > 1)
             {
-                using var scope = _serviceProvider.CreateScope();
-                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-
-                var command = new BindTelegramChatCommand
+                // Парсим "123_456"
+                var payload = parts[1].Split('_');
+                if (payload.Length == 2 &&
+                    int.TryParse(payload[0], out int userProfileId) &&
+                    int.TryParse(payload[1], out int categoryId))
                 {
-                    ChatId = message.Chat.Id,
-                    Username = message.Chat.Username,
-                    UserProfileId = userProfileId
-                };
+                    using var scope = _serviceProvider.CreateScope();
+                    var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-                await mediator.Send(command, ct);
+                    var command = new BindTelegramChatCommand
+                    {
+                        ChatId = message.Chat.Id,
+                        Username = message.Chat.Username,
+                        UserProfileId = userProfileId,
+                        CategoryId = categoryId
+                    };
 
-                await botClient.SendTextMessageAsync(
-                    chatId: message.Chat.Id,
-                    text: $"✅ Привязано к профилю ID={userProfileId}",
-                    cancellationToken: ct);
+                    await mediator.Send(command, ct);
+
+                    await botClient.SendTextMessageAsync(
+                        chatId: message.Chat.Id,
+                        text: $"✅ Привязано к профилю ID={userProfileId}, категория {categoryId}",
+                        cancellationToken: ct);
+                }
             }
         }
     }
-
     private Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken ct)
     {
         Console.WriteLine($"Ошибка: {exception.Message}");

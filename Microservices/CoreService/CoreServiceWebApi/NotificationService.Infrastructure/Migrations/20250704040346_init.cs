@@ -19,7 +19,8 @@ namespace NotificationService.Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ChatId = table.Column<long>(type: "bigint", nullable: false),
                     Username = table.Column<string>(type: "text", nullable: true),
-                    UserProfileId = table.Column<int>(type: "integer", nullable: false)
+                    UserProfileId = table.Column<int>(type: "integer", nullable: false),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

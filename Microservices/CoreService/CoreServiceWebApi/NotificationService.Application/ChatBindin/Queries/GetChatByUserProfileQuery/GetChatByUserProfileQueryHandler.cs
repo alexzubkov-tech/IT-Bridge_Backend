@@ -18,7 +18,8 @@ public class GetChatByUserProfileQueryHandler : IRequestHandler<GetChatByUserPro
         {
             ChatId = binding.ChatId,
             Username = binding.Username,
-            UserProfileId = binding.UserProfileId
+            UserProfileId = binding.UserProfileId,
+            CategoryId = binding.CategoryId,
         };
     }
 }
