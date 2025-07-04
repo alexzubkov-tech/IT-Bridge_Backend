@@ -13,6 +13,11 @@ namespace CoreService.Infrastructure.Repositories
             _context = context;
         }
 
+        public async Task<bool> CompanyExists(int companyId)
+        {
+            return await _context.Companies.AnyAsync(c => c.Id == companyId);
+        }
+
         public async Task<Company> GetByIdAsync(int id, CancellationToken ct)
         {
             return await _context.Companies

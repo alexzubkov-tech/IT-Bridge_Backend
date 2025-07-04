@@ -13,6 +13,11 @@ namespace CoreService.Infrastructure.Repositories
             _context = context;
         }
 
+        public async Task<bool> CategoryExists(int categoryId)
+        {
+            return await _context.Categories.AnyAsync(c => c.Id == categoryId);
+        }
+
         public async Task<Category> GetByIdAsync(int id)
         {
             return await _context.Categories

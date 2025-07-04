@@ -1,6 +1,8 @@
 ﻿using Application.Account.Commands;
 using BuildingBlocks.EventBus.Abstractions;
 using BuildingBlocks.EventBusRabbitMQ;
+using CoreService.Application.Behaviours;
+using CoreService.Application.Common.Exceptions;
 using CoreService.Application.Common.Interfaces;
 using CoreService.Domain.Entities;
 using CoreService.Domain.Interfaces;
@@ -10,6 +12,7 @@ using CoreService.Infrastructure.Seeders;
 using CoreService.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -124,6 +127,13 @@ builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommandHandler).Assembly));
 
+builder.Services.AddTransient(
+    typeof(IPipelineBehavior<,>),
+    typeof(DataAnnotationValidationBehaviour<,>)
+);
+
+
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -142,6 +152,39 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// 🔹 Глобальный обработчик ошибок
+app.UseExceptionHandler(builder =>
+{
+    builder.Run(async context =>
+    {
+        var exceptionFeature = context.Features.Get<IExceptionHandlerFeature>();
+        if (exceptionFeature is not null)
+        {
+            var exception = exceptionFeature.Error;
+
+            if (exception is ValidationException validationEx)
+            {
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    Errors = validationEx.Errors.Select(e => new
+                    {
+                        Field = e.MemberNames.FirstOrDefault() ?? "unknown",
+                        Message = e.ErrorMessage
+                    })
+                });
+            }
+            else
+            {
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                await context.Response.WriteAsJsonAsync(new { Error = "An unexpected error occurred." });
+            }
+        }
+    });
+});
 
 app.MapControllers();
 
