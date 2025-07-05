@@ -2,14 +2,17 @@
 using BuildingBlocks.EventBus.Abstractions;
 using BuildingBlocks.EventBusRabbitMQ;
 using CoreService.Application.Behaviours;
-using CoreService.Application.Common.Exceptions;
 using CoreService.Application.Common.Interfaces;
+using CoreService.Application.Exceptions;
+using CoreService.Application.UserProfiles.Commands.UpdateUserProfileCommand;
+using CoreService.Application.UserProfiles.Validators;
 using CoreService.Domain.Entities;
 using CoreService.Domain.Interfaces;
 using CoreService.Infrastructure;
 using CoreService.Infrastructure.Repositories;
 using CoreService.Infrastructure.Seeders;
 using CoreService.Services;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
@@ -125,12 +128,11 @@ builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 
 // MediatR
 builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommandHandler).Assembly));
-
-builder.Services.AddTransient(
-    typeof(IPipelineBehavior<,>),
-    typeof(DataAnnotationValidationBehaviour<,>)
-);
+    cfg.RegisterServicesFromAssembly(typeof(UpdateUserProfileCommandHandler).Assembly));
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+builder.Services.AddValidatorsFromAssembly(typeof(UpdateUserProfileValidator).Assembly);
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 
 
@@ -153,7 +155,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// 🔹 Глобальный обработчик ошибок
 app.UseExceptionHandler(builder =>
 {
     builder.Run(async context =>
@@ -163,25 +164,28 @@ app.UseExceptionHandler(builder =>
         {
             var exception = exceptionFeature.Error;
 
-            if (exception is ValidationException validationEx)
+            if (exception is ValidationAppException valEx)
             {
                 context.Response.ContentType = "application/json";
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
 
                 await context.Response.WriteAsJsonAsync(new
                 {
-                    Errors = validationEx.Errors.Select(e => new
-                    {
-                        Field = e.MemberNames.FirstOrDefault() ?? "unknown",
-                        Message = e.ErrorMessage
-                    })
+                    title = "One or more validation errors occurred.",
+                    errors = valEx.Errors
                 });
+
+                return;
             }
-            else
+
+            // Можно добавить другие типы исключений
+
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            await context.Response.WriteAsJsonAsync(new
             {
-                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                await context.Response.WriteAsJsonAsync(new { Error = "An unexpected error occurred." });
-            }
+                title = "An unexpected error occurred.",
+                detail = exception.Message
+            });
         }
     });
 });

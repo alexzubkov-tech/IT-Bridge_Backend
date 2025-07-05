@@ -1,6 +1,5 @@
 ﻿using BuildingBlock.Events;
 using BuildingBlocks.EventBus.Abstractions;
-using CoreService.Application.Common.Exceptions;
 using CoreService.Application.UserProfile.Mapper;
 using CoreService.Application.UserProfiles.Dtos;
 using CoreService.Domain.Entities;
@@ -38,10 +37,6 @@ namespace CoreService.Application.UserProfiles.Commands.UpdateUserProfileCommand
             var validationResults = new List<ValidationResult>();
             var validationContext = new ValidationContext(dto);
 
-            if (!Validator.TryValidateObject(dto, validationContext, validationResults, true))
-            {
-                throw new Common.Exceptions.ValidationException(validationResults);
-            }
 
             // 2. Проверяем наличие профиля
             var profile = await _userProfileRepository.GetByIdAsync(request.Id);
@@ -50,12 +45,6 @@ namespace CoreService.Application.UserProfiles.Commands.UpdateUserProfileCommand
 
             // 3. Бизнес-валидация: категория и компания
             var businessErrors = new List<ValidationResult>();
-            await dto.Validate(_categoryRepository, _companyRepository, businessErrors);
-
-            if (businessErrors.Count > 0)
-            {
-                throw new Common.Exceptions.ValidationException(businessErrors);
-            }
 
             // 4. Обновляем профиль
             var oldCategoryName = await _userProfileRepository.GetCategoryNameByUserProfileIdAsync(request.Id);
