@@ -55,5 +55,13 @@ namespace CoreService.Infrastructure.Repositories
             var rowsAffected = await _context.SaveChangesAsync(ct);
             return rowsAffected > 0;
         }
+
+        public async Task<bool> TagExistsWithName(string name, CancellationToken ct = default)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Tag name cannot be empty or null.", nameof(name));
+
+            return await _context.Tags.AnyAsync(t => t.Name.ToLower() == name.Trim().ToLower(), ct);
+        }
     }
 }

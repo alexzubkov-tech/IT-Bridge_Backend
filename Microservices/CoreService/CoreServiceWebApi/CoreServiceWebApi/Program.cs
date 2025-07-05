@@ -1,9 +1,15 @@
 ﻿using Application.Account.Commands;
 using BuildingBlocks.EventBus.Abstractions;
 using BuildingBlocks.EventBusRabbitMQ;
+using CoreService.Application.Answers.Validators;
 using CoreService.Application.Behaviours;
 using CoreService.Application.Common.Interfaces;
 using CoreService.Application.Exceptions;
+using CoreService.Application.Questions.Commands.CreateQuestionCommand;
+using CoreService.Application.Questions.Validators;
+using CoreService.Application.RatingAnswers.Commands.CreateRatingAnswerCommand;
+using CoreService.Application.RatingAnswers.Validators;
+using CoreService.Application.RatingQuestions.Validators;
 using CoreService.Application.UserProfiles.Commands.UpdateUserProfileCommand;
 using CoreService.Application.UserProfiles.Validators;
 using CoreService.Domain.Entities;
@@ -124,6 +130,7 @@ builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
 builder.Services.AddScoped<ICommentAnswerRepository, CommentAnswerRepository>();
 builder.Services.AddScoped<IRatingAnswerRepository, RatingAnswerRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<IEntityExistenceChecker, EntityExistenceChecker>();
 
 
 // MediatR
@@ -132,6 +139,16 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddValidatorsFromAssembly(typeof(UpdateUserProfileValidator).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(CreateTagValidator).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(UpdateUserProfileValidator).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(CreateRatingQuestionValidator).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(UpdateRatingQuestionValidator).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(CreateRatingAnswerValidator).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(UpdateRatingAnswerValidator).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(CreateQuestionValidator).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(UpdateQuestionValidator).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(CreateAnswerValidator).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(UpdateAnswerValidator).Assembly);
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 

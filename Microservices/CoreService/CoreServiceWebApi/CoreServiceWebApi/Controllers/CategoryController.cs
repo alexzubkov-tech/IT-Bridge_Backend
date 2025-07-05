@@ -23,15 +23,8 @@ namespace CoreServiceWebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryDto dto)
         {
-            try
-            {
-                var result = await _mediator.Send(new CreateCategoryCommand(dto));
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await _mediator.Send(new CreateCategoryCommand(dto));
+            return Ok(result);
         }
 
         [HttpPut("{id}")]
@@ -45,10 +38,6 @@ namespace CoreServiceWebApi.Controllers
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
             }
         }
 

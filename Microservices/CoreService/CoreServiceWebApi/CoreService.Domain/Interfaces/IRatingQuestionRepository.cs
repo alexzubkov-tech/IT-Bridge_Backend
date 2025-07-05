@@ -4,6 +4,7 @@ namespace CoreService.Domain.Interfaces
 {
     public interface IRatingQuestionRepository
     {
+        Task<bool> HasUserAlreadyRatedQuestion(int userProfileId, int questionId, CancellationToken ct);
         Task<RatingQuestion> GetByIdAsync(int id);
         Task<IEnumerable<RatingQuestion>> GetAllAsync();
         Task<IEnumerable<RatingQuestion>> GetAllWithDetailsAsync();

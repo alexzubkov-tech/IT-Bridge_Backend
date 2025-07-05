@@ -8,4 +8,5 @@ public interface ITagRepository
     Task<int> CreateAsync(Tag tag, CancellationToken ct);
     Task<bool> UpdateAsync(Tag tag, CancellationToken ct);
     Task<bool> DeleteAsync(int id, CancellationToken ct);
+    Task<bool> TagExistsWithName(string name, CancellationToken ct = default);
 }

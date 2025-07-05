@@ -13,6 +13,12 @@ namespace CoreService.Infrastructure.Repositories
             _context = context;
         }
 
+        public async Task<bool> HasUserAlreadyRatedQuestion(int userProfileId, int questionId, CancellationToken ct)
+        {
+            return await _context.RatingQuestions
+                .AnyAsync(rq => rq.UserProfileId == userProfileId && rq.QuestionId == questionId, ct);
+        }
+
         public async Task<RatingQuestion> GetByIdAsync(int id)
         {
             return await _context.RatingQuestions
