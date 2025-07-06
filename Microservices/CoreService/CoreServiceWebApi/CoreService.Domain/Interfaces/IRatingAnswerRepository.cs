@@ -9,6 +9,7 @@ namespace CoreService.Domain.Interfaces
         Task<IEnumerable<RatingAnswer>> GetAllAsync();
         Task<IEnumerable<RatingAnswer>> GetAllToAnswerAsync(int id);
         Task<IEnumerable<RatingAnswer>> GetAllRatingAnswerToUserProfileAsync(int id);
+        Task<IEnumerable<RatingAnswer>> GetAllRatingAnswerToAnswerAsync(int id);
         Task<int> CreateAsync(RatingAnswer ratingAnswer);
         Task<bool> UpdateAsync(RatingAnswer ratingAnswer);
         Task<bool> DeleteAsync(int id);

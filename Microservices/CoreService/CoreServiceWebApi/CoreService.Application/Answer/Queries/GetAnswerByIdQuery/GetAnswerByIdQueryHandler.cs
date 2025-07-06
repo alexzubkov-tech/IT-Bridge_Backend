@@ -1,5 +1,6 @@
 ﻿using CoreService.Application.Answers.Dtos;
 using CoreService.Application.Answers.Mapper;
+using CoreService.Application.RatingAnswers.Mapper;
 using CoreService.Domain.Entities;
 using CoreService.Domain.Interfaces;
 using MediatR;
@@ -9,30 +10,30 @@ namespace CoreService.Application.Answers.Queries.GetAnswerByIdQuery
 {
     public class GetAnswerByIdQueryHandler : IRequestHandler<GetAnswerByIdQuery, AnswerDetailsDto>
     {
-        private readonly IAnswerRepository _repository;
-        private readonly ILogger<GetAnswerByIdQueryHandler> _logger;
+        private readonly IAnswerRepository _answerRepository;
+        private readonly IRatingAnswerRepository _ratingAnswerRepository;
 
-        public GetAnswerByIdQueryHandler(IAnswerRepository repository, ILogger<GetAnswerByIdQueryHandler> logger)
+        public GetAnswerByIdQueryHandler(IAnswerRepository answerRepository, IRatingAnswerRepository ratingAnswerRepository)
         {
-            _repository = repository;
-            _logger = logger;
+            _answerRepository = answerRepository;
+            _ratingAnswerRepository = ratingAnswerRepository;
         }
 
         public async Task<AnswerDetailsDto> Handle(GetAnswerByIdQuery request, CancellationToken ct)
         {
-            try
-            {
-                var entity = await _repository.GetByIdAsync(request.Id);
-                if (entity == null)
-                    throw new KeyNotFoundException("Answer not found");
+            var answer = await _answerRepository.GetByIdAsync(request.Id);
+            if (answer == null)
+                throw new KeyNotFoundException("Answer not found");
 
-                return entity.ToDetailsDto();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error getting answer by ID.");
-                throw;
-            }
+            var rating = await _ratingAnswerRepository.GetAllRatingAnswerToAnswerAsync(request.Id);
+
+            var answerDto = answer.ToDetailsDto();
+            var ratingResult = rating.ToUserRating();
+
+            answerDto.RatingPositive = ratingResult.RatingPositive;
+            answerDto.RatingNegative = ratingResult.RatingNegative;
+
+            return answerDto;
         }
     }
 }

@@ -23,13 +23,19 @@ namespace CoreService.Infrastructure.Repositories
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        public async Task<IEnumerable<Answer>> GetAllAsync()
+        public async Task<IEnumerable<Answer>> GetAllToAnswerAsync()
         {
             return await _context.Answers
                 .Include(a => a.UserProfile)
                 .Include(a => a.Question)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Answer>> GetAllAsync()
+        {
+            return await _context.Answers.ToListAsync();
+        }
+
         public async Task<IEnumerable<Answer>> GetByQuestionIdAsync(int questionId)
         {
             return await _context.Answers

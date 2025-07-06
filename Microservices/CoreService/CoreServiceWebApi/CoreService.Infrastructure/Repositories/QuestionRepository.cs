@@ -32,7 +32,7 @@ namespace CoreService.Infrastructure.Repositories
                 .FirstOrDefaultAsync(q => q.Id == id, ct);
         }
 
-        public async Task<IEnumerable<Question>> GetAllAsync(string? title, CancellationToken ct)
+        public async Task<IEnumerable<Question>> GetAllAsync(CancellationToken ct, string? title)
         {
             IQueryable<Question> query = _context.Questions
                 .Include(q => q.QuestionTags).ThenInclude(qt => qt.Tag)

@@ -8,28 +8,66 @@ namespace CoreService.Application.RatingQuestions.Queries.GetRatingByQuestion
     public class GetRatingByQuestionQueryHandler : IRequestHandler<GetRatingByQuestionQuery, IEnumerable<RatingByQuestionDto>>
     {
         private readonly IRatingQuestionRepository _ratingQuestionRepository;
+        private readonly IQuestionRepository _questionRepository;
 
-        public GetRatingByQuestionQueryHandler(IRatingQuestionRepository ratingQuestionRepository)
+        public GetRatingByQuestionQueryHandler(
+            IRatingQuestionRepository ratingQuestionRepository,
+            IQuestionRepository questionRepository)
         {
             _ratingQuestionRepository = ratingQuestionRepository;
+            _questionRepository = questionRepository;
         }
 
         public async Task<IEnumerable<RatingByQuestionDto>> Handle(GetRatingByQuestionQuery request, CancellationToken ct)
         {
+            // Получаем все вопросы
+            var questions = await _questionRepository.GetAllAsync(ct);
+
+            // Получаем все рейтинги
             var ratings = await _ratingQuestionRepository.GetAllWithDetailsAsync();
 
-            var grouped = ratings
+            // Группируем рейтинги по QuestionId
+            var ratingsGroupedByQuestion = ratings
                 .GroupBy(r => r.QuestionId)
-                .Select(g => new RatingByQuestionDto
-                {
-                    QuestionId = g.Key,
-                    RatingPositive = g.Count(r => r.IsGoodAnswer),
-                    RatingNegative = g.Count(r => !r.IsGoodAnswer),
-                    Question = g.First().Question.ToDetailsDto(),
-                })
-                .ToList();
+                .ToDictionary(g => g.Key, g => g.ToList());
 
-            return grouped;
+            // Формируем результаты
+            var result = questions.Select(question =>
+            {
+                if (ratingsGroupedByQuestion.TryGetValue(question.Id, out var questionRatings))
+                {
+                    int positive = questionRatings.Count(r => r.IsGoodAnswer);
+                    int negative = questionRatings.Count(r => !r.IsGoodAnswer);
+
+                    return new RatingByQuestionDto
+                    {
+                        QuestionId = question.Id,
+                        RatingPositive = positive,
+                        RatingNegative = negative,
+                        Question = question.ToDetailsDto()
+                    };
+                }
+                else
+                {
+                    // Если нет рейтингов, возвращаем нули
+                    return new RatingByQuestionDto
+                    {
+                        QuestionId = question.Id,
+                        RatingPositive = 0,
+                        RatingNegative = 0,
+                        Question = question.ToDetailsDto()
+                    };
+                }
+            }).ToList();
+
+            // Дополнительно обновляем поля RatingPositive/Negative внутри Question.DetailsDto
+            foreach (var item in result)
+            {
+                item.Question.RatingPositive = item.RatingPositive;
+                item.Question.RatingNegative = item.RatingNegative;
+            }
+
+            return result;
         }
     }
 }
