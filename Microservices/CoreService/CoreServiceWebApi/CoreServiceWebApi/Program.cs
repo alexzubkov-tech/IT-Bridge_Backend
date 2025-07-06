@@ -5,9 +5,7 @@ using CoreService.Application.Answers.Validators;
 using CoreService.Application.Behaviours;
 using CoreService.Application.Common.Interfaces;
 using CoreService.Application.Exceptions;
-using CoreService.Application.Questions.Commands.CreateQuestionCommand;
 using CoreService.Application.Questions.Validators;
-using CoreService.Application.RatingAnswers.Commands.CreateRatingAnswerCommand;
 using CoreService.Application.RatingAnswers.Validators;
 using CoreService.Application.RatingQuestions.Validators;
 using CoreService.Application.UserProfiles.Commands.UpdateUserProfileCommand;
@@ -24,7 +22,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 

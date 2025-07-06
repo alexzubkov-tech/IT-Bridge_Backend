@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NotificationService.Infrastructure.Migrations
 {
     [DbContext(typeof(NotificationServiceDbContext))]
-    [Migration("20250704041816_init")]
+    [Migration("20250706064441_init")]
     partial class init
     {
         /// <inheritdoc />
